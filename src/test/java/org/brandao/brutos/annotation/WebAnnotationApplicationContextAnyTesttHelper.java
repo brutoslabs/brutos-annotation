@@ -21,7 +21,7 @@ public class WebAnnotationApplicationContextAnyTesttHelper {
 		public String fieldB;
 		
 	}
-	
+
 	public static class BeanAnyField{
 
 		@Any(
@@ -34,12 +34,72 @@ public class WebAnnotationApplicationContextAnyTesttHelper {
 		public PropertyType property;
 		
 	}
+
+	public static class BeanAnyProperty{
+
+		private PropertyType property;
+		
+		@Any(
+				metaBean=@Basic(bean="type"),
+				metaValues={
+					@MetaValue(name="A", target=PropertyTypeA.class),
+					@MetaValue(name="B", target=PropertyTypeB.class)
+				}
+			)
+		public void setProperty(PropertyType property){
+			this.property = property;
+		}
+		
+		public PropertyType getProperty(){
+			return this.property;
+		}
+		
+	}
+	
+	public static class BeanAnyConstructor{
+
+		@Transient
+		public PropertyType property;
+		
+		public BeanAnyConstructor(
+				@Any(
+						metaBean=@Basic(bean="type"),
+						metaValues={
+							@MetaValue(name="A", target=PropertyTypeA.class),
+							@MetaValue(name="B", target=PropertyTypeB.class)
+						}
+					)
+				@Basic(bean="property")
+				PropertyType property
+				){
+			this.property = property;
+		}
+		
+	}	
 	
 	@ActionStrategy(WebActionStrategyType.DETACHED)
 	@Controller
 	public static class BeanAnyFieldControllerTest{
 	
 		public void actionAction(@Basic(bean="prop")BeanAnyField field){
+		}
+		
+	}
+
+	@ActionStrategy(WebActionStrategyType.DETACHED)
+	@Controller
+	public static class BeanAnyPropertyControllerTest{
+	
+		public void actionAction(@Basic(bean="prop")BeanAnyProperty field){
+		}
+		
+	}
+
+	@ActionStrategy(WebActionStrategyType.DETACHED)
+	@Controller
+	public static class BeanAnyConstructorControllerTest{
+	
+		public void actionAction(@Basic(bean="prop")BeanAnyConstructor field){
 		}
 		
 	}
