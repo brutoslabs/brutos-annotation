@@ -155,7 +155,7 @@ public class WebActionAnnotationConfig
 
 		Class<?>[] exs = method.getExceptionTypes();
 
-		if (exs != null) {
+		if (exs != null && this.applicationContext.isMappingException()) {
 			for (Class<?> ex : exs) {
 				ThrowableEntry entry = 
 					new WebThrowableEntry(
