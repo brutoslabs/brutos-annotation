@@ -251,20 +251,20 @@ public class ControllerAnnotationConfig extends AbstractAnnotationConfig {
 		if (action != null)
 			all.add(action);
 
-		List<Annotation> commonsAnnotations = new ArrayList<Annotation>();
+		//List<Annotation> commonsAnnotations = new ArrayList<Annotation>();
 				
-		for(Annotation a: clazz.getAnnotations()){
-			commonsAnnotations.add(a);
-		}
+		//for(Annotation a: clazz.getAnnotations()){
+		//	commonsAnnotations.add(a);
+		//}
 		
 		for (Action act : all) {
 			if (act.value().length == 0)
 				throw new BrutosException("action id cannot be empty");
 
 			List<Annotation> annotations = new ArrayList<Annotation>();
-			annotations.addAll(commonsAnnotations);
 			annotations.add(act);
 			annotations.add(act.view());
+			//annotations.addAll(commonsAnnotations);
 			
 			ActionEntry entry = new ActionEntry(null,
 					annotations.toArray(new Annotation[0]),
