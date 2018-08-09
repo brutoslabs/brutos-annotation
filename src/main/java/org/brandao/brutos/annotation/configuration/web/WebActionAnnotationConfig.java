@@ -132,47 +132,12 @@ public class WebActionAnnotationConfig
 	protected void throwsSafe(ActionBuilder builder, ActionEntry method,
 			ComponentRegistry componentRegistry) {
 
-		Set<ThrowableEntry> list = new HashSet<ThrowableEntry>();
-
-		ResponseErrors throwSafeList = 
-				method.getAnnotation(ResponseErrors.class);
-
-		throwSafeList =
-				throwSafeList == null?
-					method.getControllerClass().getAnnotation(ResponseErrors.class) :
-					method.getAnnotation(ResponseErrors.class);
+		Set<ThrowableEntry> list     = new HashSet<ThrowableEntry>();
+		ResponseErrors throwSafeList = method.getAnnotation(ResponseErrors.class);
+		ResponseError throwSafe      = method.getAnnotation(ResponseError.class);
 		
-		ResponseError throwSafe = method.getAnnotation(ResponseError.class);
-		
-		if (throwSafeList != null && throwSafeList.exceptions().length != 0) {
-			list.addAll(
-				WebAnnotationUtil.toList(
-					WebAnnotationUtil.toList(throwSafeList)));
-		}
-
-		if (throwSafe != null)
-			list.add(WebAnnotationUtil.toEntry(throwSafe));
-
-		Class<?>[] exs = method.getExceptionTypes();
-
-		if (exs != null && this.applicationContext.isMappingException()) {
-			for (Class<?> ex : exs) {
-				ThrowableEntry entry = 
-					new WebThrowableEntry(
-						throwSafeList, 
-						(Class<? extends Throwable>) ex);
-
-				if (!list.contains(entry)) {
-					list.add(entry);
-				}
-			}
-		}
-
 		if(throwSafeList != null){
-			ThrowableEntry entry = 
-					new WebThrowableEntry(
-						throwSafeList, 
-						Throwable.class);
+			ThrowableEntry entry = new WebThrowableEntry(throwSafeList, Throwable.class);
 			
 			if (!list.contains(entry)) {
 				list.add(entry);
@@ -180,6 +145,35 @@ public class WebActionAnnotationConfig
 			
 		}
 		
+		if (throwSafeList != null && throwSafeList.exceptions().length != 0) {
+			list.addAll(
+				WebAnnotationUtil.toList(
+					WebAnnotationUtil.toList(throwSafeList)));
+		}
+
+		if (throwSafe != null){
+			list.add(WebAnnotationUtil.toEntry(throwSafe));
+		}
+
+		if(this.applicationContext.isAutomaticThrowMapping()){
+			//Faz o mapeamento automático de todas as exceções declaradas no método.
+		
+			Class<?>[] exs = method.getExceptionTypes();
+	
+			if (exs != null) {
+				for (Class<?> ex : exs) {
+					ThrowableEntry entry = 
+						new WebThrowableEntry(
+							throwSafeList, 
+							(Class<? extends Throwable>) ex);
+	
+					if (!list.contains(entry)) {
+						list.add(entry);
+					}
+				}
+			}
+		}
+
 		for (ThrowableEntry entry : list){
 			super.applyInternalConfiguration(entry, builder, componentRegistry);
 		}

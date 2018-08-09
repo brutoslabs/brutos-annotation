@@ -138,14 +138,33 @@ public class ControllerAnnotationConfig extends AbstractAnnotationConfig {
 	protected void throwsSafe(ControllerBuilder builder, Class<?> clazz,
 			ComponentRegistry componentRegistry) {
 
-		List<ThrowableEntry> list = new ArrayList<ThrowableEntry>();
-		ThrowSafeList throwSafeList = (ThrowSafeList) clazz
-				.getAnnotation(ThrowSafeList.class);
-		ThrowSafe throwSafe = (ThrowSafe) clazz.getAnnotation(ThrowSafe.class);
-
-		DefaultThrowSafe defualtThrowSafe = 
-				clazz.getAnnotation(DefaultThrowSafe.class);
+		List<ThrowableEntry> list         = new ArrayList<ThrowableEntry>();
+		ThrowSafeList throwSafeList       = (ThrowSafeList)clazz.getAnnotation(ThrowSafeList.class);
+		ThrowSafe throwSafe               = (ThrowSafe) clazz.getAnnotation(ThrowSafe.class);
+		DefaultThrowSafe defualtThrowSafe = clazz.getAnnotation(DefaultThrowSafe.class);
 		
+		if(defualtThrowSafe != null){
+			ThrowableEntry entry = new ThrowableEntry(defualtThrowSafe, Throwable.class);
+
+			if (!list.contains(entry)) {
+				list.add(entry);
+			}
+			
+		}
+		else
+		if(!this.applicationContext.isAutomaticThrowMapping()){
+			//desabilita todos os throw não declarados.
+			ThrowableEntry entry = new ThrowableEntry(Throwable.class);
+			entry.setEnabled(true);
+			entry.setRendered(false);
+			entry.setView(null);
+			entry.setResolved(true);
+			
+			if (!list.contains(entry)) {
+				list.add(entry);
+			}
+		}
+
 		if (throwSafeList != null) {
 			if (throwSafeList.value().length == 0)
 				throw new MappingException("exception not informed");
@@ -153,19 +172,10 @@ public class ControllerAnnotationConfig extends AbstractAnnotationConfig {
 			list.addAll(AnnotationUtil.toList(AnnotationUtil
 					.toList(throwSafeList)));
 		}
-
-		if(defualtThrowSafe != null){
-			ThrowableEntry entry = 
-					new ThrowableEntry(defualtThrowSafe, Throwable.class);
-
-			if (!list.contains(entry)) {
-				list.add(entry);
-			}
-			
-		}
 		
-		if (throwSafe != null)
+		if (throwSafe != null){
 			list.add(AnnotationUtil.toEntry(throwSafe));
+		}
 
 		for (ThrowableEntry entry : list){
 			super.applyInternalConfiguration(entry, builder, componentRegistry);

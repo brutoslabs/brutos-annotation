@@ -40,7 +40,7 @@ public class WebThrowableEntry extends ThrowableEntry{
 				0;
 						
 		this.reason = 
-				defaultValue != null?
+				!StringUtil.isEmpty(defaultValue.reason())?
 					defaultValue.reason() :
 					null;
 		

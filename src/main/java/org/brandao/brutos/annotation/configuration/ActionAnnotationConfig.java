@@ -170,46 +170,56 @@ public class ActionAnnotationConfig extends AbstractAnnotationConfig {
 	protected void throwsSafe(ActionBuilder builder, ActionEntry method,
 			ComponentRegistry componentRegistry) {
 
-		List<ThrowableEntry> list = new ArrayList<ThrowableEntry>();
-		ThrowSafeList throwSafeList = method.getAnnotation(ThrowSafeList.class);
-		ThrowSafe throwSafe = method.getAnnotation(ThrowSafe.class);
-		DefaultThrowSafe defualtThrowSafe = 
-				method.getAnnotation(DefaultThrowSafe.class);
-
-		if (throwSafeList != null) {
-			if (throwSafeList.value().length == 0)
-				throw new MappingException("exception not informed");
-
-			list.addAll(AnnotationUtil.toList(AnnotationUtil
-					.toList(throwSafeList)));
-		}
-
-		if (throwSafe != null)
-			list.add(AnnotationUtil.toEntry(throwSafe));
-
-		Class<?>[] exs = method.getExceptionTypes();
-
-		if (exs != null) {
-			for (Class<?> ex : exs) {
-				ThrowableEntry entry = defualtThrowSafe == null ? new ThrowableEntry(
-						(Class<? extends Throwable>) ex) : new ThrowableEntry(
-						defualtThrowSafe, (Class<? extends Throwable>) ex);
-
-				if (!list.contains(entry)) {
-					list.add(entry);
-				}
-			}
-		}
+		List<ThrowableEntry> list         = new ArrayList<ThrowableEntry>();
+		ThrowSafeList throwSafeList       = method.getAnnotation(ThrowSafeList.class);
+		ThrowSafe throwSafe               = method.getAnnotation(ThrowSafe.class);
+		DefaultThrowSafe defualtThrowSafe = method.getAnnotation(DefaultThrowSafe.class);
 
 		if(defualtThrowSafe != null){
-			ThrowableEntry entry = 
-					new ThrowableEntry(defualtThrowSafe, Throwable.class);
+			ThrowableEntry entry = new ThrowableEntry(defualtThrowSafe, Throwable.class);
 
 			if (!list.contains(entry)) {
 				list.add(entry);
 			}
 		}
 		
+		if (throwSafeList != null) {
+			
+			if (throwSafeList.value().length == 0)
+				throw new MappingException("exception not informed");
+
+			list
+				.addAll(AnnotationUtil
+							.toList(
+								AnnotationUtil.toList(throwSafeList)
+							)
+						);
+			
+		}
+
+		if (throwSafe != null){
+			list.add(AnnotationUtil.toEntry(throwSafe));
+		}
+
+		if(this.applicationContext.isAutomaticThrowMapping()){
+			//Faz o mapeamento automático de todas as exceções declaradas no método.
+			
+			Class<?>[] exs = method.getExceptionTypes();
+	
+			if (exs != null) {
+				for (Class<?> ex : exs) {
+					ThrowableEntry entry = 
+							defualtThrowSafe == null ? 
+								new ThrowableEntry((Class<? extends Throwable>) ex) : 
+								new ThrowableEntry(defualtThrowSafe, (Class<? extends Throwable>) ex);
+	
+					if (!list.contains(entry)) {
+						list.add(entry);
+					}
+				}
+			}
+		}
+
 		for (ThrowableEntry entry : list){
 			super.applyInternalConfiguration(entry, builder, componentRegistry);
 		}

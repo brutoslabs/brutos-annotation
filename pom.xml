@@ -23,9 +23,9 @@
 	</licenses>
 
 	<scm>
-		<url>https://github.com/brandaof/brutos-mvc</url>
-		<connection>scm:git:https://github.com/brandaof/brutos-mvc.git</connection>
-		<developerConnection>scm:git:git@github.com:brandaof/brutos-mvc.git</developerConnection>
+		<url>https://github.com/brandaof/brutos-annotation</url>
+		<connection>scm:git:https://github.com/brandaof/brutos-annotation.git</connection>
+		<developerConnection>scm:git:git@github.com:brandaof/brutos-annotation.git</developerConnection>
 	</scm>
 
 	<developers>

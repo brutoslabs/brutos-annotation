@@ -193,12 +193,31 @@ public class WebControllerAnnotationConfig
 	protected void throwsSafe(ControllerBuilder builder, Class<?> clazz,
 			ComponentRegistry componentRegistry) {
 		
-		List<ThrowableEntry> list = new ArrayList<ThrowableEntry>();
-		
-		ResponseErrors throwSafeList = 
-				clazz.getAnnotation(ResponseErrors.class);
-		
-		ResponseError throwSafe = clazz.getAnnotation(ResponseError.class);
+		List<ThrowableEntry> list    = new ArrayList<ThrowableEntry>();
+		ResponseErrors throwSafeList = clazz.getAnnotation(ResponseErrors.class);
+		ResponseError throwSafe      = clazz.getAnnotation(ResponseError.class);
+
+		if(throwSafeList != null){
+			ThrowableEntry entry = new WebThrowableEntry(throwSafeList, Throwable.class);
+			
+			if (!list.contains(entry)) {
+				list.add(entry);
+			}
+			
+		}
+		else
+		if(!this.applicationContext.isAutomaticThrowMapping()){
+			//desabilita todos os throw não declarados.
+			WebThrowableEntry entry = new WebThrowableEntry(null, Throwable.class);
+			entry.setEnabled(true);
+			entry.setRendered(false);
+			entry.setView(null);
+			entry.setResolved(true);
+			
+			if (!list.contains(entry)) {
+				list.add(entry);
+			}
+		}
 		
 		if (throwSafeList != null && throwSafeList.exceptions().length != 0) {
 			list.addAll(
@@ -209,18 +228,6 @@ public class WebControllerAnnotationConfig
 		if (throwSafe != null)
 			list.add(WebAnnotationUtil.toEntry(throwSafe));
 
-		if(throwSafeList != null){
-			ThrowableEntry entry = 
-					new WebThrowableEntry(
-						throwSafeList, 
-						Throwable.class);
-			
-			if (!list.contains(entry)) {
-				list.add(entry);
-			}
-			
-		}
-		
 		for (ThrowableEntry entry : list){
 			super.applyInternalConfiguration(entry, builder, componentRegistry);
 		}		
