@@ -40,9 +40,9 @@ public class WebThrowableEntry extends ThrowableEntry{
 				0;
 						
 		this.reason = 
-				!StringUtil.isEmpty(defaultValue.reason())?
-					defaultValue.reason() :
-					null;
+			defaultValue != null?
+				StringUtil.adjust(defaultValue.reason()) :
+				null;
 		
 		super.setDispatcher( 
 				defaultValue != null?
