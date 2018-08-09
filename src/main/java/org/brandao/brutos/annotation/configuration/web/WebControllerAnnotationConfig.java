@@ -206,7 +206,7 @@ public class WebControllerAnnotationConfig
 			
 		}
 		else
-		if(!this.applicationContext.isAutomaticThrowMapping()){
+		if(!this.applicationContext.isAutomaticExceptionMapping()){
 			//desabilita todos os throw não declarados.
 			WebThrowableEntry entry = new WebThrowableEntry(null, Throwable.class);
 			entry.setEnabled(true);

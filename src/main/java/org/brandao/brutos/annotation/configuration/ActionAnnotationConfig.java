@@ -201,7 +201,7 @@ public class ActionAnnotationConfig extends AbstractAnnotationConfig {
 			list.add(AnnotationUtil.toEntry(throwSafe));
 		}
 
-		if(this.applicationContext.isAutomaticThrowMapping()){
+		if(this.applicationContext.isAutomaticExceptionMapping()){
 			//Faz o mapeamento automático de todas as exceções declaradas no método.
 			
 			Class<?>[] exs = method.getExceptionTypes();

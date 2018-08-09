@@ -152,7 +152,7 @@ public class ControllerAnnotationConfig extends AbstractAnnotationConfig {
 			
 		}
 		else
-		if(!this.applicationContext.isAutomaticThrowMapping()){
+		if(!this.applicationContext.isAutomaticExceptionMapping()){
 			//desabilita todos os throw não declarados.
 			ThrowableEntry entry = new ThrowableEntry(Throwable.class);
 			entry.setEnabled(true);
@@ -219,8 +219,13 @@ public class ControllerAnnotationConfig extends AbstractAnnotationConfig {
 			BeanPropertyAnnotationImp annotationProp = new BeanPropertyAnnotationImp(
 					prop);
 			
-			super.applyInternalConfiguration(annotationProp, controllerBuilder,
-					componentRegistry);
+			if(this.applicationContext.isAutomaticPropertyMapping() || annotationProp.isAnnotationPresent(Basic.class)){
+				//o mapeamento da propriedade do controlador
+				//será criado somente se o mapeamento de propriedade automático estiver ligado ou
+				//se a propriedade possuir a anotação Basic
+				super.applyInternalConfiguration(
+					annotationProp, controllerBuilder, componentRegistry);
+			}
 		}
 	}
 

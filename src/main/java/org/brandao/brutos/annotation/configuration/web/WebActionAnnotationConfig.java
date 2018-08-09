@@ -155,7 +155,7 @@ public class WebActionAnnotationConfig
 			list.add(WebAnnotationUtil.toEntry(throwSafe));
 		}
 
-		if(this.applicationContext.isAutomaticThrowMapping()){
+		if(this.applicationContext.isAutomaticExceptionMapping()){
 			//Faz o mapeamento automático de todas as exceções declaradas no método.
 		
 			Class<?>[] exs = method.getExceptionTypes();
