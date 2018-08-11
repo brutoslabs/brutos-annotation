@@ -77,8 +77,15 @@ public class WebActionAnnotationConfig
 		WebActionBuilder actionBuilder = 
 				(WebActionBuilder)
 				controllerBuilder.addAction(
-						actionID, requestMethodType, 
-					result, resultRendered, view, dispatcher, resolved, executor);
+						actionID, 
+						requestMethodType, 
+						result, 
+						resultRendered, 
+						rendered ? view : null, 
+						dispatcher, 
+						rendered ? resolved : true, 
+						executor
+				);
 
 		if(requestTypes != null){
 			for(DataType type: requestTypes){

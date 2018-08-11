@@ -21,6 +21,9 @@ import org.brandao.brutos.ActionBuilder;
 import org.brandao.brutos.BrutosException;
 import org.brandao.brutos.ComponentRegistry;
 import org.brandao.brutos.ControllerBuilder;
+import org.brandao.brutos.DataType;
+import org.brandao.brutos.DispatcherType;
+import org.brandao.brutos.ThrowSafeBuilder;
 import org.brandao.brutos.annotation.Action;
 import org.brandao.brutos.annotation.Controller;
 import org.brandao.brutos.annotation.Stereotype;
@@ -30,26 +33,87 @@ import org.brandao.brutos.annotation.ThrowSafe;
  *
  * @author Brandao
  */
-@Stereotype(target = ThrowSafe.class, executeAfter = { Action.class,
-		Controller.class })
-public class ThrowSafeAnnotationConfig extends AbstractAnnotationConfig {
+@Stereotype(
+	target=ThrowSafe.class, 
+	executeAfter = {
+		Action.class,
+		Controller.class 
+	}
+)
+public class ThrowSafeAnnotationConfig extends ActionAnnotationConfig {
 
 	public boolean isApplicable(Object source) {
-		return source instanceof ThrowableEntry;
+		return
+			(source instanceof ActionEntry && AnnotationUtil.isExceptionAction((ActionEntry)source)) ||
+			source instanceof ThrowableEntry;
 	}
 
 	public Object applyConfiguration(Object source, Object builder,
 			ComponentRegistry componentRegistry) {
 
-		try {
-			return applyConfiguration0(source, builder, componentRegistry);
+		try{
+			if(source instanceof ThrowableEntry){
+				return applyThrowSafe(source, builder, componentRegistry);
+			}
+			else{
+				return this.applyThrowSafeAction(source, builder, componentRegistry);
+			}
 		} catch (Exception e) {
 			throw new BrutosException("can't create mapping exception", e);
 		}
 
 	}
 
-	public Object applyConfiguration0(Object source, Object builder,
+	protected Object applyThrowSafeAction(Object source, Object builder,
+			ComponentRegistry componentRegistry) {
+
+		//vars
+		ActionEntry actionEntry                = (ActionEntry) source;
+		ActionConfig actionConfig              = new ActionConfig(actionEntry);
+		ControllerBuilder controllerBuilder    = (ControllerBuilder)builder;
+		String result                          = actionConfig.getResultActionName();
+		String view                            = actionConfig.getActionView();
+		boolean resultRendered                 = actionConfig.isResultRenderable();
+		boolean rendered                       = actionConfig.isRenderable();
+		boolean resolved                       = actionConfig.isResolvedView();
+		String executor                        = actionConfig.getActionExecutor();
+		DataType[] requestTypes                = actionConfig.getRequestTypes();
+		DataType[] responseTypes               = actionConfig.getResponseTypes();
+		DispatcherType dispatcher              = actionConfig.getDispatcherType();
+		ThrowSafe throwSafe                    = actionEntry.getAnnotation(ThrowSafe.class);
+		
+		//registry
+		ThrowSafeBuilder actionBuilder = 
+				controllerBuilder.addThrowable(
+						throwSafe.target(), 
+						executor, 
+						rendered ? view : null, 
+						dispatcher, 
+						rendered ? resolved : true, 
+						result, 
+						resultRendered
+				);
+
+		if(requestTypes != null){
+			for(DataType type: requestTypes){
+				actionBuilder.addRequestType(type);
+			}
+		}
+
+		if(responseTypes != null){
+			for(DataType type: responseTypes){
+				actionBuilder.addResponseType(type);
+			}
+		}
+		
+		addParameters(actionBuilder.buildParameters(), actionEntry, componentRegistry);
+
+		addResultAction(actionBuilder, actionEntry.getResultAction(), componentRegistry);
+		
+		return actionBuilder;
+	}
+	
+	public Object applyThrowSafe(Object source, Object builder,
 			ComponentRegistry componentRegistry) {
 
 		if (builder instanceof ActionBuilder)
@@ -85,21 +149,4 @@ public class ThrowSafeAnnotationConfig extends AbstractAnnotationConfig {
 
 	}
 
-	/*
-	protected String getView(ControllerBuilder controllerBuilder,
-			ComponentRegistry componentRegistry, ThrowableEntry throwSafe) {
-		return throwSafe.isResolved() ? throwSafe.getView()
-				: applicationContext.getViewResolver().getView(
-						controllerBuilder, null, throwSafe.getTarget(),
-						throwSafe.getView());
-	}
-
-	protected String getView(ActionBuilder actionBuilder,
-			ComponentRegistry componentRegistry, ThrowableEntry throwSafe) {
-		return throwSafe.isResolved() ? throwSafe.getView()
-				: applicationContext.getViewResolver().getView(
-						actionBuilder.getControllerBuilder(), actionBuilder,
-						throwSafe.getTarget(), throwSafe.getView());
-	}
-	*/
 }

@@ -127,7 +127,7 @@ public class BasicAnnotationConfig extends AbstractAnnotationConfig {
 	}
 
 	protected void addIdentify(ResultActionEntry source,
-			ActionBuilder builder, ComponentRegistry componentRegistry) {
+			ComponentBuilder builder, ComponentRegistry componentRegistry) {
 
 		ResultActionBuilder newBuilder;
 
@@ -304,17 +304,19 @@ public class BasicAnnotationConfig extends AbstractAnnotationConfig {
 
 	/* ResultAction */
 	
-	protected ResultActionBuilder buildResultAction(ActionBuilder builder,
+	protected ResultActionBuilder buildResultAction(ComponentBuilder builder,
 			ResultActionEntry source, ComponentRegistry componentRegistry) {
 
 		super.applyInternalConfiguration(new ResultActionBeanEntry(source),
 				builder, componentRegistry);
 
-		return builder.getResultAction();
+		return builder instanceof ActionBuilder?
+				((ActionBuilder)builder).getResultAction() :
+				((ThrowSafeBuilder)builder).getResultAction();
 	}
 
 	protected ResultActionBuilder setResultAction(ResultActionEntry source,
-			ActionBuilder builder, ComponentRegistry componentRegistry) {
+			ComponentBuilder builder, ComponentRegistry componentRegistry) {
 
 		String name                       = source.getName();
 		EnumerationType enumProperty      = source.getEnumProperty();
@@ -322,12 +324,16 @@ public class BasicAnnotationConfig extends AbstractAnnotationConfig {
 		org.brandao.brutos.type.Type type = source.getTypeInstance();
 
 		if (source.isAnnotationPresent(Any.class)) {
-			return builder.setGenericResultAction(name,
-					TypeUtil.getRawType(source.getGenericType()));
-		} else {
-			return builder.setResultAction(name, enumProperty,
-					temporalProperty, null, type, null, false,
-					source.getGenericType());
+			return 
+					builder instanceof ActionBuilder?
+						((ActionBuilder)builder).setGenericResultAction(name,TypeUtil.getRawType(source.getGenericType())) :
+						((ThrowSafeBuilder)builder).setGenericResultAction(name,TypeUtil.getRawType(source.getGenericType()));
+		}
+		else {
+			return 
+					builder instanceof ActionBuilder?
+						((ActionBuilder)builder).setResultAction(name, enumProperty, temporalProperty, null, type, null, false, source.getGenericType()) :
+						((ThrowSafeBuilder)builder).setResultAction(name, enumProperty, temporalProperty, null, type, null, false, source.getGenericType());
 		}
 	}
 	

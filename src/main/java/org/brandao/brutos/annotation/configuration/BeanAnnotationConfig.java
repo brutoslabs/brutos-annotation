@@ -166,10 +166,10 @@ public class BeanAnnotationConfig extends AbstractAnnotationConfig {
 						componentRegistry);
 			}
 		}
-		if(builder instanceof ActionBuilder){
+		if(builder instanceof ActionBuilder || builder instanceof ThrowSafeBuilder){
 			if(source instanceof ResultActionEntry){
 				this.createBean(
-						(ActionBuilder) builder,
+						(ComponentBuilder)builder,
 						(ResultActionEntry)source, 
 						componentRegistry);
 			}
@@ -293,7 +293,7 @@ public class BeanAnnotationConfig extends AbstractAnnotationConfig {
 		}
 	}
 
-	protected void createBean(ActionBuilder builder,
+	protected void createBean(ComponentBuilder builder,
 			ResultActionEntry source,
 			ComponentRegistry componentRegistry) {
 
@@ -303,14 +303,27 @@ public class BeanAnnotationConfig extends AbstractAnnotationConfig {
 				.getInstantiableClass(source.getType()) : target.value();
 
 		BeanBuilder beanBuilder = this.createBean(
-				builder.getControllerBuilder(), classType);
-		
-		builder.setResultActionMapping(
-				source.getName(),
-				beanBuilder != null? 
-					beanBuilder.getName() : 
-					AnnotationUtil.getBeanName(classType), 
+				builder instanceof ActionBuilder? 
+						((ActionBuilder)builder).getControllerBuilder() :
+						((ThrowSafeBuilder)builder).getControllerBuilder(), 
 				classType);
+		
+		if(builder instanceof ActionBuilder){
+			((ActionBuilder)builder).setResultActionMapping(
+					source.getName(),
+					beanBuilder != null? 
+						beanBuilder.getName() : 
+						AnnotationUtil.getBeanName(classType), 
+					classType);
+		}
+		else{
+			((ThrowSafeBuilder)builder).setResultActionMapping(
+					source.getName(),
+					beanBuilder != null? 
+						beanBuilder.getName() : 
+						AnnotationUtil.getBeanName(classType), 
+					classType);
+		}
 
 		if (beanBuilder != null) {
 			createBean(beanBuilder, componentRegistry,

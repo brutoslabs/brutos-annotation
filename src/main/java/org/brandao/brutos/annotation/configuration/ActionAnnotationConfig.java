@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.brandao.brutos.ActionBuilder;
 import org.brandao.brutos.BrutosException;
+import org.brandao.brutos.ComponentBuilder;
 import org.brandao.brutos.ComponentRegistry;
 import org.brandao.brutos.ControllerBuilder;
 import org.brandao.brutos.DataType;
@@ -88,7 +89,13 @@ public class ActionAnnotationConfig extends AbstractAnnotationConfig {
 		ActionBuilder actionBuilder = 
 				controllerBuilder.addAction(
 						actionID, 
-					result, resultRendered, view, dispatcher, resolved, executor);
+						result, 
+						resultRendered, 
+						rendered ? view : null, 
+						dispatcher, 
+						rendered ? resolved : true, 
+						executor
+				);
 
 		if(requestTypes != null){
 			for(DataType type: requestTypes){
@@ -110,14 +117,14 @@ public class ActionAnnotationConfig extends AbstractAnnotationConfig {
 
 		throwsSafe(actionBuilder, actionEntry, componentRegistry);
 
-		addParameters(actionBuilder, actionEntry, componentRegistry);
+		addParameters(actionBuilder.buildParameters(), actionEntry, componentRegistry);
 
 		addResultAction(actionBuilder, actionEntry.getResultAction(), componentRegistry);
 		
 		return actionBuilder;
 	}
 
-	protected void addResultAction(ActionBuilder builder, 
+	protected void addResultAction(ComponentBuilder builder, 
 			ResultActionEntry method, ComponentRegistry componentRegistry){
 		
 		if(method != null && method.getType() != void.class){
@@ -143,7 +150,7 @@ public class ActionAnnotationConfig extends AbstractAnnotationConfig {
 				action.getControllerBuilder(), action, null, view);
 	}
 
-	protected void addParameters(ActionBuilder builder, ActionEntry method,
+	protected void addParameters(ParametersBuilder parametersBuilder, ActionEntry method,
 			ComponentRegistry componentRegistry) {
 
 		Type[] genericTypes = method.getGenericParameterTypes();
@@ -152,8 +159,6 @@ public class ActionAnnotationConfig extends AbstractAnnotationConfig {
 
 		if (types == null)
 			return;
-
-		ParametersBuilder parametersBuilder = builder.buildParameters();
 
 		for (int i = 0; i < types.length; i++) {
 			ActionParamEntry actionParamEntry = new ActionParamEntry(null,
@@ -227,12 +232,28 @@ public class ActionAnnotationConfig extends AbstractAnnotationConfig {
 
 	}
 
+	protected String getView(View viewAnnotation,
+			ComponentRegistry componentRegistry) {
+		String view = viewAnnotation == null
+				|| StringUtil.isEmpty(viewAnnotation.value()) ? null
+				: StringUtil.adjust(viewAnnotation.value());
+
+		return view;
+	}
+	
 	public boolean isApplicable(Object source) {
-		return source instanceof ActionEntry
-				&& (((ActionEntry) source).isAnnotationPresent(Action.class)
-						|| ((ActionEntry) source).getName().endsWith("Action") || ((ActionEntry) source)
-							.isAbstractAction())
-				&& !((ActionEntry) source).isAnnotationPresent(Transient.class);
+		
+		if(!(source instanceof ActionEntry)){
+			return false;
+		}
+		
+		ActionEntry action = (ActionEntry)source;
+		
+		if(action.isAnnotationPresent(Transient.class)){
+			return false;
+		}
+		
+		return AnnotationUtil.isAction(action);
 	}
 
 }

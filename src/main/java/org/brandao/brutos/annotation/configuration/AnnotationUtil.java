@@ -33,6 +33,7 @@ import org.brandao.brutos.web.WebApplicationContext;
 import org.brandao.brutos.logger.Logger;
 import org.brandao.brutos.xml.FilterEntity;
 import org.brandao.brutos.annotation.scanner.Scanner;
+import org.brandao.brutos.annotation.web.ResponseError;
 import org.brandao.brutos.xml.XMLBrutosConstants;
 
 /**
@@ -82,6 +83,19 @@ public class AnnotationUtil {
 		return isController && !isTransient(clazz) && !isInterceptor(clazz);
 	}
 
+	public static boolean isAction(ActionEntry action) {
+		return 
+			action.isAnnotationPresent(Action.class) ||
+			action.getName().endsWith("Action") || 
+			action.isAbstractAction();	
+	}
+
+	public static boolean isExceptionAction(ActionEntry action) {
+		return !isAction(action) && 
+				(action.isAnnotationPresent(ResponseError.class) ||
+				action.isAnnotationPresent(ThrowSafe.class));
+	}
+	
 	public static boolean isScope(Class<?> clazz) {
 		boolean isScope = clazz.getSimpleName().endsWith("Scope")
 				|| clazz.isAnnotationPresent(ExtendedScope.class);
