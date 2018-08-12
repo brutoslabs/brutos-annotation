@@ -26,7 +26,7 @@ import com.mockrunner.mock.web.MockHttpServletRequest;
 import com.mockrunner.mock.web.MockHttpServletResponse;
 import com.mockrunner.mock.web.MockRequestDispatcher;
 
-public class WebAnnotationApplicationContextResponseErrorTest extends BrutosTestCase{
+public class WebAnnotationApplicationContextResponseErrorsTest extends BrutosTestCase{
 
 	/*---- Controller level----*/
 	
