@@ -86,7 +86,6 @@ public class WebThrowSafeAnnotationConfig
 		ActionEntry actionEntry                = (ActionEntry) source;
 		WebActionConfig actionConfig           = new WebActionConfig(actionEntry);
 		WebControllerBuilder controllerBuilder = (WebControllerBuilder) builder;
-		String actionID                        = actionConfig.getActionId();
 		String result                          = actionConfig.getResultActionName();
 		String view                            = actionConfig.getActionView();
 		boolean resultRendered                 = actionConfig.isResultRenderable();
@@ -99,15 +98,19 @@ public class WebThrowSafeAnnotationConfig
 		DispatcherType dispatcher              = actionConfig.getDispatcherType();
 		ResponseError responseError            = actionEntry.getAnnotation(ResponseError.class);
 		String exceptionName                   = StringUtil.isEmpty(responseError.name())? result : StringUtil.adjust(responseError.name());
-		Class<?> target                        = responseError.target();
+		Class<?>[] target                      = responseError.target();
 		int responseErrorCode                  = responseStatus != 0? responseStatus : responseError.code();
 		String reason                          = StringUtil.adjust(responseError.reason());
+		
+		if(responseError.target().length == 0){
+			throw new MappingException("target not found");
+		}
 		
 		//registry
 		WebThrowSafeBuilder actionBuilder = 
 				(WebThrowSafeBuilder)
 				controllerBuilder.addThrowable(
-						target, 
+						target[0], 
 						executor, 
 						responseErrorCode, 
 						reason, 
@@ -128,6 +131,10 @@ public class WebThrowSafeAnnotationConfig
 			for(DataType type: responseTypes){
 				actionBuilder.addResponseType(type);
 			}
+		}
+		
+		for(int i=1;i<responseError.target().length;i++){
+			actionBuilder.addAlias(responseError.target()[i]);
 		}
 		
 		addParameters(actionBuilder.buildParameters(), actionEntry, componentRegistry);

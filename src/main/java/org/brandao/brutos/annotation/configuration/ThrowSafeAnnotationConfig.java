@@ -28,6 +28,7 @@ import org.brandao.brutos.annotation.Action;
 import org.brandao.brutos.annotation.Controller;
 import org.brandao.brutos.annotation.Stereotype;
 import org.brandao.brutos.annotation.ThrowSafe;
+import org.brandao.brutos.mapping.MappingException;
 
 /**
  *
@@ -82,10 +83,14 @@ public class ThrowSafeAnnotationConfig extends ActionAnnotationConfig {
 		DispatcherType dispatcher              = actionConfig.getDispatcherType();
 		ThrowSafe throwSafe                    = actionEntry.getAnnotation(ThrowSafe.class);
 		
+		if(throwSafe.target().length == 0){
+			throw new MappingException("target not found");
+		}
+		
 		//registry
 		ThrowSafeBuilder actionBuilder = 
 				controllerBuilder.addThrowable(
-						throwSafe.target(), 
+						throwSafe.target()[0], 
 						executor, 
 						rendered ? view : null, 
 						dispatcher, 
@@ -104,6 +109,10 @@ public class ThrowSafeAnnotationConfig extends ActionAnnotationConfig {
 			for(DataType type: responseTypes){
 				actionBuilder.addResponseType(type);
 			}
+		}
+		
+		for(int i=1;i<throwSafe.target().length;i++){
+			actionBuilder.addAlias(throwSafe.target()[i]);
 		}
 		
 		addParameters(actionBuilder.buildParameters(), actionEntry, componentRegistry);
