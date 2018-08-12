@@ -51,7 +51,7 @@ public @interface DefaultThrowSafe {
 	/**
 	 * @see ThrowSafe#rendered()
 	 */
-	boolean rendered() default true;
+	boolean rendered() default false;
 
 	/**
 	 * @see ThrowSafe#enabled()

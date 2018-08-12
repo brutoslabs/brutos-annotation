@@ -1,5 +1,11 @@
-package org.brandao.brutos.annotation;
+package org.brandao.brutos.annotation.helper;
 
+import org.brandao.brutos.annotation.ActionStrategy;
+import org.brandao.brutos.annotation.Any;
+import org.brandao.brutos.annotation.Basic;
+import org.brandao.brutos.annotation.Controller;
+import org.brandao.brutos.annotation.MetaValue;
+import org.brandao.brutos.annotation.Transient;
 import org.brandao.brutos.annotation.web.WebActionStrategyType;
 
 public class WebAnnotationApplicationContextAnyTesttHelper {

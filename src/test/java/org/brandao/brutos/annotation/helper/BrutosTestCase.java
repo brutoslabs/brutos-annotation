@@ -1,4 +1,4 @@
-package org.brandao.brutos.annotation;
+package org.brandao.brutos.annotation.helper;
 
 import java.util.HashMap;
 import java.util.List;

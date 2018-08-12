@@ -31,7 +31,7 @@ import org.brandao.brutos.annotation.DispatcherType;
  * @author Brandao
  *
  */
-@Target({ ElementType.METHOD, ElementType.TYPE })
+@Target({ ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ResponseError {
 
@@ -77,7 +77,7 @@ public @interface ResponseError {
      * Determina a renderização, ou não, da vista. 
      * Se verdadeiro a visão será renderizada, caso contrário não.
      */
-    boolean rendered() default true;
+    boolean rendered() default false;
     
     /**
      * Desabilita a interceptação da exceção.

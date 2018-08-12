@@ -5,13 +5,15 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.brandao.brutos.annotation.WebAnnotationApplicationContextAnyTesttHelper.BeanAnyConstructor;
-import org.brandao.brutos.annotation.WebAnnotationApplicationContextAnyTesttHelper.BeanAnyConstructorControllerTest;
-import org.brandao.brutos.annotation.WebAnnotationApplicationContextAnyTesttHelper.BeanAnyField;
-import org.brandao.brutos.annotation.WebAnnotationApplicationContextAnyTesttHelper.BeanAnyFieldControllerTest;
-import org.brandao.brutos.annotation.WebAnnotationApplicationContextAnyTesttHelper.BeanAnyProperty;
-import org.brandao.brutos.annotation.WebAnnotationApplicationContextAnyTesttHelper.BeanAnyPropertyControllerTest;
-import org.brandao.brutos.annotation.WebAnnotationApplicationContextAnyTesttHelper.PropertyTypeA;
+import org.brandao.brutos.annotation.helper.BrutosTestCase;
+import org.brandao.brutos.annotation.helper.WebApplicationTester;
+import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextAnyTesttHelper.BeanAnyConstructor;
+import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextAnyTesttHelper.BeanAnyConstructorControllerTest;
+import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextAnyTesttHelper.BeanAnyField;
+import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextAnyTesttHelper.BeanAnyFieldControllerTest;
+import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextAnyTesttHelper.BeanAnyProperty;
+import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextAnyTesttHelper.BeanAnyPropertyControllerTest;
+import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextAnyTesttHelper.PropertyTypeA;
 import org.brandao.brutos.web.ConfigurableWebApplicationContext;
 import org.brandao.brutos.web.test.WebApplicationContextTester;
 

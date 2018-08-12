@@ -1,4 +1,4 @@
-package org.brandao.brutos.annotation;
+package org.brandao.brutos.annotation.helper;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -6,6 +6,20 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
+import org.brandao.brutos.annotation.ActionStrategy;
+import org.brandao.brutos.annotation.Basic;
+import org.brandao.brutos.annotation.Constructor;
+import org.brandao.brutos.annotation.Controller;
+import org.brandao.brutos.annotation.ElementCollection;
+import org.brandao.brutos.annotation.Enumerated;
+import org.brandao.brutos.annotation.EnumerationType;
+import org.brandao.brutos.annotation.FetchTypes;
+import org.brandao.brutos.annotation.KeyCollection;
+import org.brandao.brutos.annotation.MappingTypes;
+import org.brandao.brutos.annotation.ScopeType;
+import org.brandao.brutos.annotation.Target;
+import org.brandao.brutos.annotation.Temporal;
+import org.brandao.brutos.annotation.Transient;
 import org.brandao.brutos.annotation.web.WebActionStrategyType;
 
 public class WebAnnotationApplicationContextBeanTestHelper {

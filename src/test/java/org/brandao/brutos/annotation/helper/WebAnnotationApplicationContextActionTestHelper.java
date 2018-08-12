@@ -1,9 +1,16 @@
-package org.brandao.brutos.annotation;
+package org.brandao.brutos.annotation.helper;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.brandao.brutos.annotation.Action;
+import org.brandao.brutos.annotation.ActionStrategy;
+import org.brandao.brutos.annotation.Basic;
+import org.brandao.brutos.annotation.Constructor;
+import org.brandao.brutos.annotation.Controller;
+import org.brandao.brutos.annotation.MappingTypes;
+import org.brandao.brutos.annotation.Result;
 import org.brandao.brutos.annotation.web.WebActionStrategyType;
 
 public class WebAnnotationApplicationContextActionTestHelper {

@@ -96,7 +96,7 @@ public @interface ThrowSafe {
      * Determina a renderização, ou não, da vista. 
      * Se verdadeiro a visão será renderizada, caso contrário não.
      */
-    boolean rendered() default true;
+    boolean rendered() default false;
     
     /**
      * Desabilita a interceptação da exceção.
