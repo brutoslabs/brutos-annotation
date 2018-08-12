@@ -103,13 +103,6 @@ public class WebThrowSafeAnnotationConfig
 		int responseErrorCode                  = responseStatus != 0? responseStatus : responseError.code();
 		String reason                          = StringUtil.adjust(responseError.reason());
 		
-		//validtion
-		if (!StringUtil.isEmpty(view) && StringUtil.isEmpty(executor)
-				&& !rendered){
-			throw new MappingException(
-					"view must be rendered in abstract actions: " + actionID);
-		}
-
 		//registry
 		WebThrowSafeBuilder actionBuilder = 
 				(WebThrowSafeBuilder)

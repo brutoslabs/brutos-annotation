@@ -78,7 +78,7 @@ public @interface ThrowSafe {
     /**
      * Exceção alvo do mapeamento.
      */
-    Class<? extends Throwable> target();
+    Class<? extends Throwable>[] target();
     
     /**
      * Nome da exceção. Se não informado, será assumido
