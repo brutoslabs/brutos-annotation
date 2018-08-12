@@ -128,7 +128,7 @@ public class WebActionAnnotationConfig
 		
 		throwsSafe(actionBuilder, actionEntry, componentRegistry);
 
-		addParameters(actionBuilder, actionEntry, componentRegistry);
+		addParameters(actionBuilder.buildParameters(), actionEntry, componentRegistry);
 
 		addResultAction(actionBuilder, actionEntry.getResultAction(), componentRegistry);
 		
@@ -159,20 +159,17 @@ public class WebActionAnnotationConfig
 		}
 
 		if (throwSafe != null){
-			list.add(WebAnnotationUtil.toEntry(throwSafe));
+			list.addAll(WebAnnotationUtil.toEntry(throwSafe));
 		}
 
 		if(this.applicationContext.isAutomaticExceptionMapping()){
 			//Faz o mapeamento automático de todas as exceções declaradas no método.
 		
-			Class<?>[] exs = method.getExceptionTypes();
+			Class<? extends Throwable>[] exs = (Class<? extends Throwable>[]) method.getExceptionTypes();
 	
 			if (exs != null) {
-				for (Class<?> ex : exs) {
-					ThrowableEntry entry = 
-						new WebThrowableEntry(
-							throwSafeList, 
-							(Class<? extends Throwable>) ex);
+				for (Class<? extends Throwable> ex : exs) {
+					ThrowableEntry entry = new WebThrowableEntry(throwSafeList, ex);
 	
 					if (!list.contains(entry)) {
 						list.add(entry);

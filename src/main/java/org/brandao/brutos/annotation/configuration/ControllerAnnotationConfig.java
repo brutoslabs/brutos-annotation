@@ -174,7 +174,7 @@ public class ControllerAnnotationConfig extends AbstractAnnotationConfig {
 		}
 		
 		if (throwSafe != null){
-			list.add(AnnotationUtil.toEntry(throwSafe));
+			list.addAll(AnnotationUtil.toEntry(throwSafe));
 		}
 
 		for (ThrowableEntry entry : list){

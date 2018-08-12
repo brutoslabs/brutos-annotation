@@ -139,10 +139,15 @@ public class ThrowSafeAnnotationConfig extends ActionAnnotationConfig {
 			ComponentRegistry componentRegistry, ThrowableEntry throwSafe) {
 
 		if (throwSafe.isEnabled()) {
-			actionBuilder.addThrowable(throwSafe.getTarget(),
-					throwSafe.isRendered() ? throwSafe.getView() : null,
-					throwSafe.isRendered() ? throwSafe.isResolved() : true,
-					throwSafe.getName(), throwSafe.getDispatcher());
+			
+				actionBuilder.addThrowable(
+						throwSafe.getTarget(),
+						throwSafe.isRendered() ? throwSafe.getView() : null,
+						throwSafe.isRendered() ? throwSafe.isResolved() : true,
+						throwSafe.getName(), 
+						throwSafe.getDispatcher()
+				);
+			
 		}
 	}
 
@@ -150,10 +155,15 @@ public class ThrowSafeAnnotationConfig extends ActionAnnotationConfig {
 			ComponentRegistry componentRegistry, ThrowableEntry throwSafe) {
 
 		if (throwSafe.isEnabled()) {
-			controllerBuilder.addThrowable(throwSafe.getTarget(),
-					throwSafe.isRendered() ? throwSafe.getView() : null,
-					throwSafe.isRendered() ? throwSafe.isResolved() : true,
-					throwSafe.getName(), throwSafe.getDispatcher());
+			
+				controllerBuilder.addThrowable(
+						throwSafe.getTarget(),
+						throwSafe.isRendered() ? throwSafe.getView() : null,
+						throwSafe.isRendered() ? throwSafe.isResolved() : true,
+						throwSafe.getName(), 
+						throwSafe.getDispatcher()
+				);
+			
 		}
 
 	}

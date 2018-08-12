@@ -18,23 +18,62 @@
 package org.brandao.brutos.annotation.configuration;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
-import org.brandao.brutos.*;
-import org.brandao.brutos.annotation.*;
+import org.brandao.brutos.ApplicationContext;
+import org.brandao.brutos.BrutosConstants;
+import org.brandao.brutos.BrutosException;
+import org.brandao.brutos.ClassUtil;
+import org.brandao.brutos.ComponentRegistry;
+import org.brandao.brutos.ConfigurableApplicationContext;
+import org.brandao.brutos.TypeRegistry;
+import org.brandao.brutos.annotation.Action;
+import org.brandao.brutos.annotation.AnnotationApplicationContext;
+import org.brandao.brutos.annotation.AnnotationConfig;
+import org.brandao.brutos.annotation.Any;
+import org.brandao.brutos.annotation.Basic;
+import org.brandao.brutos.annotation.Bean;
+import org.brandao.brutos.annotation.ComponentScan;
+import org.brandao.brutos.annotation.Controller;
+import org.brandao.brutos.annotation.ElementCollection;
+import org.brandao.brutos.annotation.Enumerated;
 import org.brandao.brutos.annotation.EnumerationType;
+import org.brandao.brutos.annotation.ExtendedScope;
+import org.brandao.brutos.annotation.FilterType;
+import org.brandao.brutos.annotation.Intercepts;
+import org.brandao.brutos.annotation.InterceptsStack;
+import org.brandao.brutos.annotation.InterceptsStackList;
+import org.brandao.brutos.annotation.KeyCollection;
+import org.brandao.brutos.annotation.MappingTypes;
+import org.brandao.brutos.annotation.Result;
+import org.brandao.brutos.annotation.Stereotype;
+import org.brandao.brutos.annotation.Temporal;
+import org.brandao.brutos.annotation.ThrowSafe;
+import org.brandao.brutos.annotation.ThrowSafeList;
+import org.brandao.brutos.annotation.Transient;
+import org.brandao.brutos.annotation.Type;
+import org.brandao.brutos.annotation.TypeFilter;
 import org.brandao.brutos.annotation.bean.BeanPropertyAnnotation;
 import org.brandao.brutos.annotation.scanner.DefaultScanner;
+import org.brandao.brutos.annotation.scanner.Scanner;
+import org.brandao.brutos.annotation.web.ResponseError;
+import org.brandao.brutos.logger.Logger;
 import org.brandao.brutos.logger.LoggerProvider;
 import org.brandao.brutos.mapping.StringUtil;
 import org.brandao.brutos.type.TypeUtil;
 import org.brandao.brutos.web.BrutosWebConstants;
 import org.brandao.brutos.web.WebApplicationContext;
-import org.brandao.brutos.logger.Logger;
 import org.brandao.brutos.xml.FilterEntity;
-import org.brandao.brutos.annotation.scanner.Scanner;
-import org.brandao.brutos.annotation.web.ResponseError;
 import org.brandao.brutos.xml.XMLBrutosConstants;
+
 
 /**
  *
@@ -46,16 +85,27 @@ public class AnnotationUtil {
 		return Arrays.asList(value.value());
 	}
 
-	public static ThrowableEntry toEntry(ThrowSafe value) {
-		return new ThrowableEntry(value);
+	public static ThrowableEntry toEntry(ThrowSafe value, Class<? extends Throwable> target) {
+		return new ThrowableEntry(value, target);
 	}
 
+	public static List<ThrowableEntry> toEntry(ThrowSafe value) {
+		
+		List<ThrowableEntry> result = new ArrayList<ThrowableEntry>();
+		
+		for(Class<? extends Throwable> e: value.target()){
+			result.add(toEntry(value, e));
+		}
+		
+		return result;
+	}
+	
 	public static List<ThrowableEntry> toList(List<ThrowSafe> list) {
 
 		List<ThrowableEntry> result = new ArrayList<ThrowableEntry>();
 
 		for (ThrowSafe t : list)
-			result.add(toEntry(t));
+			result.addAll(toEntry(t));
 
 		return result;
 	}

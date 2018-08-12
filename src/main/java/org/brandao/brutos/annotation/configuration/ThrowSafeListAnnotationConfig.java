@@ -26,6 +26,7 @@ import org.brandao.brutos.annotation.ThrowSafeList;
  *
  * @author Brandao
  */
+@Deprecated
 public class ThrowSafeListAnnotationConfig extends AbstractAnnotationConfig {
 
 	public boolean isApplicable(Object source) {
@@ -76,8 +77,8 @@ public class ThrowSafeListAnnotationConfig extends AbstractAnnotationConfig {
 				: DispatcherType.valueOf(throwSafe.dispatcher());
 
 		String name = throwSafe.name();
-		Class<? extends Throwable> target = throwSafe.target();
-		String view = throwSafe.view();
+		//Class<? extends Throwable> target = throwSafe.target();
+		//String view = throwSafe.view();
 		// actionBuilder.addThrowable(target, view, name, dispatcher);
 	}
 
@@ -87,8 +88,8 @@ public class ThrowSafeListAnnotationConfig extends AbstractAnnotationConfig {
 				: DispatcherType.valueOf(throwSafe.dispatcher());
 
 		String name = throwSafe.name();
-		Class<? extends Throwable> target = throwSafe.target();
-		String view = throwSafe.view();
+		//Class<? extends Throwable> target = throwSafe.target();
+		//String view = throwSafe.view();
 		// controllerBuilder.addThrowable(target, view, name, dispatcher);
 	}
 

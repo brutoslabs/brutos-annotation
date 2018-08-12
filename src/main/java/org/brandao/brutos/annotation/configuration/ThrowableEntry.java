@@ -52,7 +52,7 @@ public class ThrowableEntry {
 		this.resolved = false;
 	}
 
-	public ThrowableEntry(ThrowSafe value) {
+	public ThrowableEntry(ThrowSafe value, Class<? extends Throwable> target) {
 		this.dispatcher = StringUtil.isEmpty(value.dispatcher()) ? null
 				: DispatcherType.valueOf(StringUtil.adjust(value.dispatcher()));
 
@@ -61,7 +61,7 @@ public class ThrowableEntry {
 				: StringUtil.adjust(value.name());
 
 		this.rendered = value.rendered();
-		this.target = value.target();
+		this.target = target;
 		this.view = StringUtil.adjust(value.view());
 		this.resolved = value.resolved();
 	}

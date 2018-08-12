@@ -203,7 +203,7 @@ public class ActionAnnotationConfig extends AbstractAnnotationConfig {
 		}
 
 		if (throwSafe != null){
-			list.add(AnnotationUtil.toEntry(throwSafe));
+			list.addAll(AnnotationUtil.toEntry(throwSafe));
 		}
 
 		if(this.applicationContext.isAutomaticExceptionMapping()){

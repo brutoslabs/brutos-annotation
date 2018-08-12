@@ -92,7 +92,7 @@ public class WebThrowableEntry extends ThrowableEntry{
 		
 	}
 	
-	public WebThrowableEntry(ResponseError value){
+	public WebThrowableEntry(ResponseError value, Class<? extends Throwable> target){
 		
 		this.responseError = value.code();
 						
@@ -119,7 +119,7 @@ public class WebThrowableEntry extends ThrowableEntry{
 		);
 		
 		super.setTarget(
-			value.target()
+			target
 		);
 		
 		super.setView(

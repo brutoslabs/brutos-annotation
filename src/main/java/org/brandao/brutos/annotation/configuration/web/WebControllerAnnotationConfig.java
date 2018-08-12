@@ -208,7 +208,7 @@ public class WebControllerAnnotationConfig
 		else
 		if(!this.applicationContext.isAutomaticExceptionMapping()){
 			//desabilita todos os throw não declarados.
-			WebThrowableEntry entry = new WebThrowableEntry(null, Throwable.class);
+			WebThrowableEntry entry = new WebThrowableEntry((ResponseErrors)null, Throwable.class);
 			entry.setEnabled(true);
 			entry.setRendered(false);
 			entry.setView(null);
@@ -226,7 +226,7 @@ public class WebControllerAnnotationConfig
 		}
 
 		if (throwSafe != null)
-			list.add(WebAnnotationUtil.toEntry(throwSafe));
+			list.addAll(WebAnnotationUtil.toEntry(throwSafe));
 
 		for (ThrowableEntry entry : list){
 			super.applyInternalConfiguration(entry, builder, componentRegistry);

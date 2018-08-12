@@ -164,7 +164,8 @@ public class WebThrowSafeAnnotationConfig
 		WebThrowableEntry throwSafe = (WebThrowableEntry)source;
 		
 		if (throwSafe.isEnabled()) {
-			builder.addThrowable(
+			
+				builder.addThrowable(
 					throwSafe.getResponseError(), 
 					throwSafe.getReason(),
 					throwSafe.getTarget(),
@@ -172,7 +173,8 @@ public class WebThrowSafeAnnotationConfig
 					throwSafe.getName(), 
 					throwSafe.getDispatcher(),
 					throwSafe.isRendered() ? throwSafe.isResolved() : true
-			);
+				);
+				
 		}
 	}
 
@@ -183,15 +185,17 @@ public class WebThrowSafeAnnotationConfig
 		WebThrowableEntry throwSafe  = (WebThrowableEntry)source;
 		
 		if (throwSafe.isEnabled()) {
-			builder.addThrowable(
-					throwSafe.getResponseError(), 
-					throwSafe.getReason(),
-					throwSafe.getTarget(),
-					throwSafe.isRendered() ? throwSafe.getView() : null,
-					throwSafe.getName(), 
-					throwSafe.getDispatcher(),
-					throwSafe.isRendered() ? throwSafe.isResolved() : true
-			);
+			
+				builder.addThrowable(
+						throwSafe.getResponseError(), 
+						throwSafe.getReason(),
+						throwSafe.getTarget(),
+						throwSafe.isRendered() ? throwSafe.getView() : null,
+						throwSafe.getName(), 
+						throwSafe.getDispatcher(),
+						throwSafe.isRendered() ? throwSafe.isResolved() : true
+				);
+			
 		}
 
 	}

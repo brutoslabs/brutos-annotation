@@ -36,16 +36,28 @@ public class WebAnnotationUtil {
 		return Arrays.asList(value.exceptions());
 	}
 	
-	public static ThrowableEntry toEntry(ResponseError value) {
-		return new WebThrowableEntry(value);
+	public static ThrowableEntry toEntry(ResponseError value, Class<? extends Throwable> target) {
+		return new WebThrowableEntry(value, target);
 	}
 
+	public static List<ThrowableEntry> toEntry(ResponseError value) {
+		
+		List<ThrowableEntry> result = new ArrayList<ThrowableEntry>();
+		
+		for(Class<? extends Throwable> e: value.target()){
+			result.add(toEntry(value, e));
+		}
+		
+		return result;
+	}
+	
 	public static List<ThrowableEntry> toList(List<ResponseError> list) {
 
 		List<ThrowableEntry> result = new ArrayList<ThrowableEntry>();
 
-		for (ResponseError t : list)
-			result.add(toEntry(t));
+		for (ResponseError t : list){
+			result.addAll(toEntry(t));
+		}
 
 		return result;
 	}
