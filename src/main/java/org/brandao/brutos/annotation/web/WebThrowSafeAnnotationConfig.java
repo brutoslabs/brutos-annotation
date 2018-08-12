@@ -29,14 +29,12 @@ import org.brandao.brutos.annotation.Stereotype;
 import org.brandao.brutos.annotation.ThrowSafe;
 import org.brandao.brutos.annotation.configuration.ActionEntry;
 import org.brandao.brutos.annotation.configuration.AnnotationUtil;
-import org.brandao.brutos.annotation.configuration.ThrowSafeAnnotationConfig;
 import org.brandao.brutos.annotation.configuration.ThrowableEntry;
 import org.brandao.brutos.annotation.configuration.web.WebActionAnnotationConfig;
 import org.brandao.brutos.annotation.configuration.web.WebActionConfig;
 import org.brandao.brutos.annotation.configuration.web.WebThrowableEntry;
 import org.brandao.brutos.mapping.MappingException;
 import org.brandao.brutos.mapping.StringUtil;
-import org.brandao.brutos.web.RequestMethodType;
 import org.brandao.brutos.web.WebActionBuilder;
 import org.brandao.brutos.web.WebControllerBuilder;
 import org.brandao.brutos.web.WebThrowSafeBuilder;
@@ -89,7 +87,6 @@ public class WebThrowSafeAnnotationConfig
 		WebActionConfig actionConfig           = new WebActionConfig(actionEntry);
 		WebControllerBuilder controllerBuilder = (WebControllerBuilder) builder;
 		String actionID                        = actionConfig.getActionId();
-		RequestMethodType requestMethodType    = actionConfig.getRequestMethodType();
 		String result                          = actionConfig.getResultActionName();
 		String view                            = actionConfig.getActionView();
 		boolean resultRendered                 = actionConfig.isResultRenderable();
@@ -101,6 +98,10 @@ public class WebThrowSafeAnnotationConfig
 		int responseStatus                     = actionConfig.getResponseStatus();
 		DispatcherType dispatcher              = actionConfig.getDispatcherType();
 		ResponseError responseError            = actionEntry.getAnnotation(ResponseError.class);
+		String exceptionName                   = StringUtil.isEmpty(responseError.name())? result : StringUtil.adjust(responseError.name());
+		Class<?> target                        = responseError.target();
+		int responseErrorCode                  = responseStatus != 0? responseStatus : responseError.code();
+		String reason                          = StringUtil.adjust(responseError.reason());
 		
 		//validtion
 		if (!StringUtil.isEmpty(view) && StringUtil.isEmpty(executor)
@@ -113,14 +114,15 @@ public class WebThrowSafeAnnotationConfig
 		WebThrowSafeBuilder actionBuilder = 
 				(WebThrowSafeBuilder)
 				controllerBuilder.addThrowable(
-						responseStatus != 0? responseStatus : responseError.code(), 
-						StringUtil.adjust(responseError.reason()), 
-						responseError.target(), 
+						target, 
 						executor, 
+						responseErrorCode, 
+						reason, 
 						rendered ? view : null, 
-						StringUtil.adjust(responseError.name()), 
 						dispatcher, 
-						rendered ? resolved : true
+						rendered ? resolved : true, 
+						exceptionName, 
+						resultRendered
 				);
 
 		if(requestTypes != null){
@@ -135,34 +137,24 @@ public class WebThrowSafeAnnotationConfig
 			}
 		}
 		
-		String[] actionAlias = actionConfig.getAliasName();
-		RequestMethodType[] requestMethodTypeAlias = actionConfig.getRequestMethodTypeAlias();
-		
-		if(requestMethodTypeAlias != null){
-			for(RequestMethodType requestMethod: requestMethodTypeAlias){
-				actionBuilder.addAlias(StringUtil.adjust(actionID), requestMethod);
-			}
-		}
-		
-		if(actionAlias != null){
-			for(String actionName: actionAlias){
-				
-				if(requestMethodTypeAlias == null){
-					actionBuilder.addAlias(actionName);
-				}
-				else{
-					for(RequestMethodType requestMethod: requestMethodTypeAlias){
-						actionBuilder.addAlias(StringUtil.adjust(actionName), requestMethod);
-					}
-				}
-			}
-		}
-		
 		addParameters(actionBuilder.buildParameters(), actionEntry, componentRegistry);
 
 		addResultAction(actionBuilder, actionEntry.getResultAction(), componentRegistry);
 		
 		return actionBuilder;		
+	}
+	
+	protected Object applyThrowSafe(Object source, Object builder,
+			ComponentRegistry componentRegistry) {
+
+		if (builder instanceof ActionBuilder)
+			addThrowSafe((ActionBuilder) builder, componentRegistry,
+					(ThrowableEntry) source);
+		else
+			addThrowSafe((ControllerBuilder) builder, componentRegistry,
+					(ThrowableEntry) source);
+
+		return builder;
 	}
 	
 	protected void addThrowSafe(ActionBuilder actionBuilder,
