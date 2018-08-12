@@ -86,6 +86,91 @@ public class WebAnnotationApplicationContextResponseErrorsTestHelper {
 			}
 			
 		}
+
+		/*---- Action level----*/
+		
+		
+		/* Configuração padrão */
+		
+		@ActionStrategy(WebActionStrategyType.DETACHED)
+		public static class DefaultConfigActionController{
+			
+			@Action("/action")
+			@View("view")
+			public void action(){
+				throw new NullPointerException();
+			}
+			
+		}
+
+		/* Alteração da configuração padrão */
+		
+		@ResponseErrors(code=HttpStatus.BAD_REQUEST)
+		@ActionStrategy(WebActionStrategyType.DETACHED)
+		public static class ActionLevelController{
+			
+			@Action("/action")
+			@View("view")
+			@ResponseErrors(code=HttpStatus.NOT_FOUND)
+			public void action(){
+				throw new NullPointerException();
+			}
+			
+		}
+
+		/* Alteração da configuração de uma exceção */
+		
+		@ResponseErrors(
+			code=HttpStatus.ALREADY_REPORTED,
+			exceptions=@ResponseError(code=HttpStatus.CONFLICT, target=NullPointerException.class)
+		)
+		@ActionStrategy(WebActionStrategyType.DETACHED)
+		public static class ActionLevelExceptionController{
+			
+			@Action("/action")
+			@View("view")
+			@ResponseErrors(
+					code=HttpStatus.NOT_FOUND,
+					exceptions=@ResponseError(code=HttpStatus.BAD_REQUEST, target=NullPointerException.class)
+				)
+			public void action(){
+				throw new NullPointerException();
+			}
+			
+		}
+
+		/* Alteração da configuração de uma exceção */
+		
+		@ResponseErrors(
+			code=HttpStatus.BAD_GATEWAY,
+			exceptions=
+				@ResponseError(
+					code=HttpStatus.CONFLICT,
+					rendered=true,
+					view="xxx", 
+					target=NullPointerException.class
+				)
+		)
+		@ActionStrategy(WebActionStrategyType.DETACHED)
+		public static class ActionLevelExceptionWithViewController{
+			
+			@Action("/action")
+			@View("view")
+			@ResponseErrors(
+					code=HttpStatus.NOT_FOUND,
+					exceptions=
+						@ResponseError(
+							code=HttpStatus.BAD_REQUEST,
+							rendered=true,
+							view="exp", 
+							target=NullPointerException.class
+						)
+				)
+			public void action(){
+				throw new NullPointerException();
+			}
+			
+		}
 		
 	}
 	
