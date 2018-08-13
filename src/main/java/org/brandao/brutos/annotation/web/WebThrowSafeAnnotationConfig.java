@@ -130,7 +130,7 @@ public class WebThrowSafeAnnotationConfig
 			}
 		}
 		*/
-		for(int i=1;i<alias.length;i++){
+		for(int i=0;i<alias.length;i++){
 			actionBuilder.addAlias(alias[i]);
 		}
 		
