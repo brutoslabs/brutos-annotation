@@ -1,6 +1,5 @@
 package org.brandao.brutos.annotation.helper;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.brandao.brutos.annotation.Action;

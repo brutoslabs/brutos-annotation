@@ -21,7 +21,6 @@ import org.brandao.brutos.ActionBuilder;
 import org.brandao.brutos.BrutosException;
 import org.brandao.brutos.ComponentRegistry;
 import org.brandao.brutos.ControllerBuilder;
-import org.brandao.brutos.DataType;
 import org.brandao.brutos.DispatcherType;
 import org.brandao.brutos.annotation.Action;
 import org.brandao.brutos.annotation.Controller;
@@ -31,10 +30,9 @@ import org.brandao.brutos.annotation.configuration.ActionEntry;
 import org.brandao.brutos.annotation.configuration.AnnotationUtil;
 import org.brandao.brutos.annotation.configuration.ThrowableEntry;
 import org.brandao.brutos.annotation.configuration.web.WebActionAnnotationConfig;
-import org.brandao.brutos.annotation.configuration.web.WebActionConfig;
+import org.brandao.brutos.annotation.configuration.web.WebThrowActionConfig;
 import org.brandao.brutos.annotation.configuration.web.WebThrowableEntry;
 import org.brandao.brutos.mapping.MappingException;
-import org.brandao.brutos.mapping.StringUtil;
 import org.brandao.brutos.web.WebActionBuilder;
 import org.brandao.brutos.web.WebControllerBuilder;
 import org.brandao.brutos.web.WebThrowSafeBuilder;
@@ -84,7 +82,7 @@ public class WebThrowSafeAnnotationConfig
 		
 		//vars
 		ActionEntry actionEntry                = (ActionEntry) source;
-		WebActionConfig actionConfig           = new WebActionConfig(actionEntry);
+		WebThrowActionConfig actionConfig      = new WebThrowActionConfig(actionEntry);
 		WebControllerBuilder controllerBuilder = (WebControllerBuilder) builder;
 		String result                          = actionConfig.getResultActionName();
 		String view                            = actionConfig.getActionView();
@@ -92,17 +90,15 @@ public class WebThrowSafeAnnotationConfig
 		boolean rendered                       = actionConfig.isRenderable();
 		boolean resolved                       = actionConfig.isResolvedView();
 		String executor                        = actionConfig.getActionExecutor();
-		DataType[] requestTypes                = actionConfig.getRequestTypes();
-		DataType[] responseTypes               = actionConfig.getResponseTypes();
+		//DataType[] requestTypes                = actionConfig.getRequestTypes();
+		//DataType[] responseTypes               = actionConfig.getResponseTypes();
 		int responseStatus                     = actionConfig.getResponseStatus();
 		DispatcherType dispatcher              = actionConfig.getDispatcherType();
-		ResponseError responseError            = actionEntry.getAnnotation(ResponseError.class);
-		String exceptionName                   = StringUtil.isEmpty(responseError.name())? result : StringUtil.adjust(responseError.name());
-		Class<?>[] target                      = responseError.target();
-		int responseErrorCode                  = responseStatus != 0? responseStatus : responseError.code();
-		String reason                          = StringUtil.adjust(responseError.reason());
+		Class<? extends Throwable> target      = actionConfig.getTarget();
+		Class<? extends Throwable>[] alias     = actionConfig.getTargetAlias();
+		String reason                          = actionConfig.getReason();
 		
-		if(responseError.target().length == 0){
+		if(target == null){
 			throw new MappingException("target not found");
 		}
 		
@@ -110,17 +106,18 @@ public class WebThrowSafeAnnotationConfig
 		WebThrowSafeBuilder actionBuilder = 
 				(WebThrowSafeBuilder)
 				controllerBuilder.addThrowable(
-						target[0], 
+						target, 
 						executor, 
-						responseErrorCode, 
+						responseStatus, 
 						reason, 
 						rendered ? view : null, 
 						dispatcher, 
 						rendered ? resolved : true, 
-						exceptionName, 
+								result, 
 						resultRendered
 				);
 
+		/*
 		if(requestTypes != null){
 			for(DataType type: requestTypes){
 				actionBuilder.addRequestType(type);
@@ -132,9 +129,9 @@ public class WebThrowSafeAnnotationConfig
 				actionBuilder.addResponseType(type);
 			}
 		}
-		
-		for(int i=1;i<responseError.target().length;i++){
-			actionBuilder.addAlias(responseError.target()[i]);
+		*/
+		for(int i=1;i<alias.length;i++){
+			actionBuilder.addAlias(alias[i]);
 		}
 		
 		addParameters(actionBuilder.buildParameters(), actionEntry, componentRegistry);

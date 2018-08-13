@@ -337,7 +337,7 @@ public class WebAnnotationApplicationContextResponseErrorTest extends BrutosTest
 					MockHttpServletResponse res = (MockHttpServletResponse)response;
 					MockRequestDispatcher rd    = 
 							(MockRequestDispatcher) req.getRequestDispatcherMap()
-							.get("/WEB-INF/views/exceptionwithmethoddefaultconfigcontroller/nullpointerexception.jsp");
+							.get("/WEB-INF/views/view.jsp");
 					
 					assertNotNull(rd);
 					assertEquals(HttpStatus.BAD_REQUEST, res.getStatusCode());

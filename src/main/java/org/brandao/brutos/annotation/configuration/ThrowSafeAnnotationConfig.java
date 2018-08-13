@@ -21,7 +21,6 @@ import org.brandao.brutos.ActionBuilder;
 import org.brandao.brutos.BrutosException;
 import org.brandao.brutos.ComponentRegistry;
 import org.brandao.brutos.ControllerBuilder;
-import org.brandao.brutos.DataType;
 import org.brandao.brutos.DispatcherType;
 import org.brandao.brutos.ThrowSafeBuilder;
 import org.brandao.brutos.annotation.Action;
@@ -70,27 +69,28 @@ public class ThrowSafeAnnotationConfig extends ActionAnnotationConfig {
 
 		//vars
 		ActionEntry actionEntry                = (ActionEntry) source;
-		ActionConfig actionConfig              = new ActionConfig(actionEntry);
+		ThrowActionConfig actionConfig         = new ThrowActionConfig(actionEntry);
 		ControllerBuilder controllerBuilder    = (ControllerBuilder)builder;
+		Class<? extends Throwable> target      = actionConfig.getTarget();
+		Class<? extends Throwable>[] alias     = actionConfig.getTargetAlias();
 		String result                          = actionConfig.getResultActionName();
 		String view                            = actionConfig.getActionView();
 		boolean resultRendered                 = actionConfig.isResultRenderable();
 		boolean rendered                       = actionConfig.isRenderable();
 		boolean resolved                       = actionConfig.isResolvedView();
 		String executor                        = actionConfig.getActionExecutor();
-		DataType[] requestTypes                = actionConfig.getRequestTypes();
-		DataType[] responseTypes               = actionConfig.getResponseTypes();
+		//DataType[] requestTypes                = actionConfig.getRequestTypes();
+		//DataType[] responseTypes               = actionConfig.getResponseTypes();
 		DispatcherType dispatcher              = actionConfig.getDispatcherType();
-		ThrowSafe throwSafe                    = actionEntry.getAnnotation(ThrowSafe.class);
 		
-		if(throwSafe.target().length == 0){
+		if(target == null){
 			throw new MappingException("target not found");
 		}
 		
 		//registry
 		ThrowSafeBuilder actionBuilder = 
 				controllerBuilder.addThrowable(
-						throwSafe.target()[0], 
+						target, 
 						executor, 
 						rendered ? view : null, 
 						dispatcher, 
@@ -99,6 +99,7 @@ public class ThrowSafeAnnotationConfig extends ActionAnnotationConfig {
 						resultRendered
 				);
 
+		/*
 		if(requestTypes != null){
 			for(DataType type: requestTypes){
 				actionBuilder.addRequestType(type);
@@ -110,13 +111,13 @@ public class ThrowSafeAnnotationConfig extends ActionAnnotationConfig {
 				actionBuilder.addResponseType(type);
 			}
 		}
+		*/
 		
-		for(int i=1;i<throwSafe.target().length;i++){
-			actionBuilder.addAlias(throwSafe.target()[i]);
+		for(int i=0;i<alias.length;i++){
+			actionBuilder.addAlias(alias[i]);
 		}
 		
 		addParameters(actionBuilder.buildParameters(), actionEntry, componentRegistry);
-
 		addResultAction(actionBuilder, actionEntry.getResultAction(), componentRegistry);
 		
 		return actionBuilder;
