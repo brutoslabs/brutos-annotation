@@ -1,7 +1,11 @@
 package org.brandao.brutos.annotation.helper;
 
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
 import org.brandao.brutos.annotation.Action;
 import org.brandao.brutos.annotation.ActionStrategy;
+import org.brandao.brutos.annotation.Basic;
 import org.brandao.brutos.annotation.View;
 import org.brandao.brutos.annotation.web.ResponseError;
 import org.brandao.brutos.annotation.web.WebActionStrategyType;
@@ -154,6 +158,24 @@ public class WebAnnotationApplicationContextResponseErrorTestHelper {
 			@ResponseError(code=HttpStatus.BAD_REQUEST, rendered=true, view="npe", target=NullPointerException.class)
 			public void npeException(){
 				
+			}
+		}
+
+		/* definindo view com anotação*/
+		
+		@ActionStrategy(WebActionStrategyType.DETACHED)
+		public static class ExceptionWithMethodAndViewAnnotationController{
+			
+			@Action("/action")
+			@View("view")
+			public void action(){
+				throw new NullPointerException();
+			}
+
+			@ResponseError(code=HttpStatus.BAD_REQUEST, target=NullPointerException.class)
+			@View("npe")
+			public void npeException(@Basic(bean="exception")Throwable exception){
+				TestCase.assertNotNull(exception);
 			}
 		}
 		

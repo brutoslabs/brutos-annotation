@@ -135,9 +135,9 @@ public class AnnotationUtil {
 
 	public static boolean isAction(ActionEntry action) {
 		return 
-			action.isAnnotationPresent(Action.class) ||
+			(action.isAnnotationPresent(Action.class) ||
 			action.getName().endsWith("Action") || 
-			action.isAbstractAction();	
+			action.isAbstractAction()) && !action.isAnnotationPresent(Transient.class);	
 	}
 
 	public static boolean isExceptionAction(ActionEntry action) {

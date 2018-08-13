@@ -31,8 +31,16 @@ import org.brandao.brutos.type.TypeUtil;
  *
  * @author Brandao
  */
-@Stereotype(target = Basic.class, executeAfter = { Controller.class,
-		Bean.class, Action.class })
+@Stereotype(
+	target=
+		Basic.class, 
+	executeAfter = {
+		Controller.class,
+		Bean.class, 
+		Action.class,
+		ThrowSafe.class
+	}
+)
 public class BasicAnnotationConfig extends AbstractAnnotationConfig {
 
 	public boolean isApplicable(Object source) {

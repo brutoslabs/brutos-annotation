@@ -6,7 +6,6 @@ import org.brandao.brutos.annotation.AcceptRequestType;
 import org.brandao.brutos.annotation.Action;
 import org.brandao.brutos.annotation.Controller;
 import org.brandao.brutos.annotation.Stereotype;
-import org.brandao.brutos.annotation.Transient;
 import org.brandao.brutos.annotation.configuration.AbstractAnnotationConfig;
 import org.brandao.brutos.annotation.configuration.ActionEntry;
 import org.brandao.brutos.annotation.configuration.AnnotationUtil;
@@ -30,11 +29,7 @@ public class AcceptRequestTypeAnnotationConfig
 		}
 		else
 		if(source instanceof ActionEntry){
-			return
-			(((ActionEntry) source).isAnnotationPresent(Action.class) || 
-			((ActionEntry) source).getName().endsWith("Action") || 
-			((ActionEntry) source).isAbstractAction()) && 
-			!((ActionEntry) source).isAnnotationPresent(Transient.class);
+			return AnnotationUtil.isAction((ActionEntry)source);
 		}
 		else
 			return false;

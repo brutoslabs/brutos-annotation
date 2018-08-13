@@ -13,6 +13,7 @@ import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextRespo
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ControllerLevelExceptionWithViewController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.DefaultConfigActionController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.DefaultConfigController;
+import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodAndViewAnnotationController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodAndViewController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodDefaultConfigController;
 import org.brandao.brutos.annotation.web.test.MockAnnotationWebApplicationContext;
@@ -395,6 +396,53 @@ public class WebAnnotationApplicationContextResponseErrorTest extends BrutosTest
 				
 			}, 
 			new Class[]{ExceptionWithMethodAndViewController.class}
+		);
+	}
+
+	public void testExceptionWithMethodAndViewAnnotationController(){
+		WebApplicationContextTester.run(
+			"/action", 
+			new BasicWebApplicationTester(){
+				
+                public void prepareContext(Map<String, String> parameters) {
+                    parameters.put(
+                            ContextLoader.CONTEXT_CLASS,
+                            MockAnnotationWebApplicationContext.class.getName()
+                    );
+
+                    parameters.put(
+                            MockAnnotationWebApplicationContext.IGNORE_RESOURCES,
+                            "true"
+                    );
+                }
+				
+            	public void prepareRequest(MockHttpServletRequest request) {
+            	}
+            	
+				
+				public void prepareSession(Map<String, Object> parameters) {
+				}
+				
+				public void checkResult(HttpServletRequest request,
+						HttpServletResponse response, ServletContext context,
+						ConfigurableWebApplicationContext applicationContext) {
+					
+					MockHttpServletRequest req  = (MockHttpServletRequest)request;
+					MockHttpServletResponse res = (MockHttpServletResponse)response;
+					MockRequestDispatcher rd    = 
+							(MockRequestDispatcher) req.getRequestDispatcherMap()
+							.get("/WEB-INF/views/npe.jsp");
+					
+					assertNotNull(rd);
+					assertEquals(HttpStatus.BAD_REQUEST, res.getStatusCode());
+				}
+				
+				public void checkException(Throwable e) {
+					throw new RuntimeException(e);
+				}
+				
+			}, 
+			new Class[]{ExceptionWithMethodAndViewAnnotationController.class}
 		);
 	}
 	
