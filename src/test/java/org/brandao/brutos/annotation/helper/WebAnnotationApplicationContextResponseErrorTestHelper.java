@@ -177,6 +177,54 @@ public class WebAnnotationApplicationContextResponseErrorTestHelper {
 				TestCase.assertNotNull(exception);
 			}
 		}
+
+		/* método com multiplas exceções em nível de controlador */
+
+		@ActionStrategy(WebActionStrategyType.DETACHED)
+		@ResponseError(code=HttpStatus.BAD_REQUEST, 
+		target={IllegalStateException.class,NullPointerException.class})
+		public static class ExceptionAliasControllerLevelController{
+			
+			@Action("/action")
+			@View("view")
+			public void action(){
+				throw new NullPointerException();
+			}
+
+		}
+
+		/* método com multiplas exceções em nível de ação */
+
+		@ActionStrategy(WebActionStrategyType.DETACHED)
+		@ResponseError(code=HttpStatus.CONFLICT, 
+		target={IllegalStateException.class,NullPointerException.class})
+		public static class ExceptionAliasActionLevelController{
+			
+			@Action("/action")
+			@View("view")
+			@ResponseError(code=HttpStatus.BAD_REQUEST, 
+			target={IllegalStateException.class,NullPointerException.class})
+			public void action(){
+				throw new NullPointerException();
+			}
+
+		}
+		
+		@ActionStrategy(WebActionStrategyType.DETACHED)
+		public static class ExceptionWithMethodAndAliasAnnotationController{
+			
+			@Action("/action")
+			@View("view")
+			public void action(){
+				throw new NullPointerException();
+			}
+
+			@ResponseError(code=HttpStatus.BAD_REQUEST, 
+					target={IllegalStateException.class,NullPointerException.class})
+			public void npeException(@Basic(bean="exception")Throwable exception){
+				TestCase.assertNotNull(exception);
+			}
+		}
 		
 	}
 	
