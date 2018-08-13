@@ -23,6 +23,11 @@ public class WebThrowActionConfig extends WebActionConfig{
 	public Class<? extends Throwable> getTarget(){
 		Class<? extends Throwable>[] targets = 
 				super.actionEntry.getAnnotation(ResponseError.class).target();
+		
+		if(targets.length == 0){
+			targets = super.actionEntry.getAnnotation(ResponseError.class).value();
+		}
+		
 		return targets.length == 0? null : targets[0];
 	}
 

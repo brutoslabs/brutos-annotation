@@ -59,7 +59,12 @@ public @interface ResponseError {
     /**
      * Exceção alvo do mapeamento.
      */
-    Class<? extends Throwable>[] target();
+    Class<? extends Throwable>[] target() default {};
+
+    /**
+     * pseudônimo do {@link ResponseError#target()}
+     */
+    Class<? extends Throwable>[] value() default {};
     
     /**
      * Nome da exceção. Se não informado, será assumido

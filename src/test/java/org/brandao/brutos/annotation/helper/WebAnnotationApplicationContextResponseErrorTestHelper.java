@@ -7,6 +7,7 @@ import org.brandao.brutos.annotation.ActionStrategy;
 import org.brandao.brutos.annotation.Basic;
 import org.brandao.brutos.annotation.View;
 import org.brandao.brutos.annotation.web.ResponseError;
+import org.brandao.brutos.annotation.web.ResponseStatus;
 import org.brandao.brutos.annotation.web.WebActionStrategyType;
 import org.brandao.brutos.web.HttpStatus;
 
@@ -178,7 +179,7 @@ public class WebAnnotationApplicationContextResponseErrorTestHelper {
 			}
 		}
 
-		/* método com multiplas exceções em nível de controlador */
+		/* multiplas exceções em nível de controlador */
 
 		@ActionStrategy(WebActionStrategyType.DETACHED)
 		@ResponseError(code=HttpStatus.BAD_REQUEST, 
@@ -193,7 +194,7 @@ public class WebAnnotationApplicationContextResponseErrorTestHelper {
 
 		}
 
-		/* método com multiplas exceções em nível de ação */
+		/* multiplas exceções em nível de ação */
 
 		@ActionStrategy(WebActionStrategyType.DETACHED)
 		@ResponseError(code=HttpStatus.CONFLICT, 
@@ -210,6 +211,8 @@ public class WebAnnotationApplicationContextResponseErrorTestHelper {
 
 		}
 		
+		/* método com multiplas exceções */
+		
 		@ActionStrategy(WebActionStrategyType.DETACHED)
 		public static class ExceptionWithMethodAndAliasAnnotationController{
 			
@@ -221,6 +224,24 @@ public class WebAnnotationApplicationContextResponseErrorTestHelper {
 
 			@ResponseError(code=HttpStatus.BAD_REQUEST, 
 					target={IllegalStateException.class,NullPointerException.class})
+			public void npeException(@Basic(bean="exception")Throwable exception){
+				TestCase.assertNotNull(exception);
+			}
+		}
+
+		/* método com multiplas exceções e status da resposta */
+		
+		@ActionStrategy(WebActionStrategyType.DETACHED)
+		public static class ExceptionWithMethodAndStatusAnnotationController{
+			
+			@Action("/action")
+			@View("view")
+			public void action(){
+				throw new NullPointerException();
+			}
+
+			@ResponseError({IllegalStateException.class,NullPointerException.class})
+			@ResponseStatus(HttpStatus.BAD_REQUEST)
 			public void npeException(@Basic(bean="exception")Throwable exception){
 				TestCase.assertNotNull(exception);
 			}
