@@ -123,6 +123,8 @@ public class WebAnnotationApplicationContextResponseErrorTestHelper {
 
 		/* Exceção delegada a um método */
 		
+		/* configuração padrão */
+		
 		@ActionStrategy(WebActionStrategyType.DETACHED)
 		public static class ExceptionWithMethodDefaultConfigController{
 			
@@ -133,6 +135,23 @@ public class WebAnnotationApplicationContextResponseErrorTestHelper {
 			}
 
 			@ResponseError(code=HttpStatus.BAD_REQUEST, target=NullPointerException.class)
+			public void npeException(){
+				
+			}
+		}
+
+		/* definindo view */
+		
+		@ActionStrategy(WebActionStrategyType.DETACHED)
+		public static class ExceptionWithMethodAndViewController{
+			
+			@Action("/action")
+			@View("view")
+			public void action(){
+				throw new NullPointerException();
+			}
+
+			@ResponseError(code=HttpStatus.BAD_REQUEST, rendered=true, view="npe", target=NullPointerException.class)
 			public void npeException(){
 				
 			}
