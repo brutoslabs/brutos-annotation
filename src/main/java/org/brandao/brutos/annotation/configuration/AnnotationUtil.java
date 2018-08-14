@@ -25,10 +25,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
-import org.brandao.brutos.ApplicationContext;
 import org.brandao.brutos.BrutosConstants;
 import org.brandao.brutos.BrutosException;
 import org.brandao.brutos.ClassUtil;
@@ -64,13 +62,10 @@ import org.brandao.brutos.annotation.TypeFilter;
 import org.brandao.brutos.annotation.bean.BeanPropertyAnnotation;
 import org.brandao.brutos.annotation.scanner.DefaultScanner;
 import org.brandao.brutos.annotation.scanner.Scanner;
-import org.brandao.brutos.annotation.web.ResponseError;
 import org.brandao.brutos.logger.Logger;
 import org.brandao.brutos.logger.LoggerProvider;
 import org.brandao.brutos.mapping.StringUtil;
 import org.brandao.brutos.type.TypeUtil;
-import org.brandao.brutos.web.BrutosWebConstants;
-import org.brandao.brutos.web.WebApplicationContext;
 import org.brandao.brutos.xml.FilterEntity;
 import org.brandao.brutos.xml.XMLBrutosConstants;
 
@@ -141,9 +136,7 @@ public class AnnotationUtil {
 	}
 
 	public static boolean isExceptionAction(ActionEntry action) {
-		return !isAction(action) && 
-				(action.isAnnotationPresent(ResponseError.class) ||
-				action.isAnnotationPresent(ThrowSafe.class));
+		return !isAction(action) && action.isAnnotationPresent(ThrowSafe.class);
 	}
 	
 	public static boolean isScope(Class<?> clazz) {
@@ -334,6 +327,7 @@ public class AnnotationUtil {
 		return Map.class.isAssignableFrom(clazz);
 	}
 
+	/*
 	public static boolean isWebApplication(ApplicationContext applicationContext) {
 		Properties config = applicationContext.getConfiguration();
 		return config.getProperty(BrutosWebConstants.WEB_APPLICATION_CLASS) != null;
@@ -342,7 +336,8 @@ public class AnnotationUtil {
 	public static boolean isWebApplication(ComponentRegistry componentRegistry) {
 		return componentRegistry instanceof WebApplicationContext;
 	}
-
+    */
+	
 	public static AnnotationConfig createAnnotationTree(
 			ConfigurableApplicationContext applicationContext,
 			List<Class<?>> list) {

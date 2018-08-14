@@ -1,6 +1,8 @@
 package org.brandao.brutos.annotation.configuration;
 
+import org.brandao.brutos.ActionBuilder;
 import org.brandao.brutos.ComponentRegistry;
+import org.brandao.brutos.ControllerBuilder;
 import org.brandao.brutos.DataType;
 import org.brandao.brutos.annotation.Action;
 import org.brandao.brutos.annotation.Controller;
@@ -10,9 +12,6 @@ import org.brandao.brutos.annotation.Transient;
 import org.brandao.brutos.annotation.configuration.AbstractAnnotationConfig;
 import org.brandao.brutos.annotation.configuration.ActionEntry;
 import org.brandao.brutos.annotation.configuration.AnnotationUtil;
-import org.brandao.brutos.annotation.web.RequestMethod;
-import org.brandao.brutos.web.WebActionBuilder;
-import org.brandao.brutos.web.WebControllerBuilder;
 
 @Stereotype(
 	target=ResponseType.class, 
@@ -44,12 +43,12 @@ public class ResponseTypeAnnotationConfig
 	public Object applyConfiguration(Object source, Object builder,
 			ComponentRegistry componentRegistry) {
 
-		if(source instanceof WebControllerBuilder){
+		if(source instanceof ControllerBuilder){
 			Class<?> clazz = (Class<?>)source;
 			
-			if(clazz.isAnnotationPresent(RequestMethod.class)){
+			if(clazz.isAnnotationPresent(ResponseType.class)){
 				ResponseType rm = clazz.getAnnotation(ResponseType.class);
-				WebControllerBuilder b = (WebControllerBuilder)builder;
+				ControllerBuilder b = (ControllerBuilder)builder;
 				String[] values = rm.value();
 				for(String v: values){
 					b.addResponseType(DataType.valueOf(v));
@@ -57,12 +56,12 @@ public class ResponseTypeAnnotationConfig
 			}
 		}
 		else
-		if(source instanceof WebActionBuilder){
+		if(source instanceof ActionBuilder){
 			ActionEntry action = (ActionEntry)source;
 			
-			if(action.isAnnotationPresent(RequestMethod.class)){
+			if(action.isAnnotationPresent(ResponseType.class)){
 				ResponseType rm = action.getAnnotation(ResponseType.class);
-				WebActionBuilder b = (WebActionBuilder)builder;
+				ActionBuilder b = (ActionBuilder)builder;
 				String[] values = rm.value();
 				for(String v: values){
 					b.addResponseType(DataType.valueOf(v));
