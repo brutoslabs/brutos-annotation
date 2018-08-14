@@ -118,6 +118,21 @@ public class WebAnnotationApplicationContextResponseErrorsTestHelper {
 			
 		}
 
+		/* Exceção com status e vista */
+		
+		@ResponseErrors(code=HttpStatus.BAD_REQUEST)
+		@ActionStrategy(WebActionStrategyType.DETACHED)
+		public static class ActionLevelWithStatusAndViewController{
+			
+			@Action("/action")
+			@View("view")
+			@ResponseErrors(code=HttpStatus.NOT_FOUND, view="npe")
+			public void action(){
+				throw new NullPointerException();
+			}
+			
+		}
+		
 		/* Alteração da configuração de uma exceção */
 		
 		@ResponseErrors(
