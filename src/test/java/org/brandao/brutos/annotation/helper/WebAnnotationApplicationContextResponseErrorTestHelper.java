@@ -267,6 +267,27 @@ public class WebAnnotationApplicationContextResponseErrorTestHelper {
 				return result;
 			}
 		}
+
+		/* método com multiplas exceções e montagem da resposta */
+		
+		@ActionStrategy(WebActionStrategyType.DETACHED)
+		public static class ExceptionWithMethodAndBuildResponseWithViewController{
+			
+			@Action("/action")
+			@View("view")
+			public void action(){
+				throw new NullPointerException();
+			}
+
+			@ResponseError({IllegalStateException.class,NullPointerException.class})
+			public WebResultAction npeException(@Basic(bean="exception")Throwable exception, WebResultAction result){
+				result
+					.setResponseStatus(HttpStatus.BAD_REQUEST)
+					.setView("exp")
+					.add("ex", exception);
+				return result;
+			}
+		}
 		
 	}
 	

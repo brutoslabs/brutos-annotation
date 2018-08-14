@@ -113,7 +113,7 @@ public class WebThrowSafeAnnotationConfig
 						rendered ? view : null, 
 						dispatcher, 
 						rendered ? resolved : true, 
-								result, 
+						result, 
 						resultRendered
 				);
 

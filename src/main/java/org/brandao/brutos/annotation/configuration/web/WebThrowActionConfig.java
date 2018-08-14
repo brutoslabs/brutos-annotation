@@ -35,6 +35,11 @@ public class WebThrowActionConfig extends WebActionConfig{
 	public Class<? extends Throwable>[] getTargetAlias(){
 		Class<? extends Throwable>[] targets = 
 				super.actionEntry.getAnnotation(ResponseError.class).target();
+		
+		if(targets.length == 0){
+			targets = super.actionEntry.getAnnotation(ResponseError.class).value();
+		}
+		
 		if(targets.length < 2){
 			return new Class[0];
 		}

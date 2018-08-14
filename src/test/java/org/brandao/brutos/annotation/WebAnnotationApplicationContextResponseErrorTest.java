@@ -17,6 +17,7 @@ import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextRespo
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionAliasControllerLevelController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodAndAliasAnnotationController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodAndBuildResponseController;
+import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodAndBuildResponseWithViewController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodAndViewAnnotationController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodAndViewController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodDefaultConfigController;
@@ -629,6 +630,54 @@ public class WebAnnotationApplicationContextResponseErrorTest extends BrutosTest
 				
 			}, 
 			new Class[]{ExceptionWithMethodAndBuildResponseController.class}
+		);
+	}
+
+	public void testExceptionWithMethodAndBuildResponseWithViewController(){
+		WebApplicationContextTester.run(
+			"/action", 
+			new BasicWebApplicationTester(){
+				
+                public void prepareContext(Map<String, String> parameters) {
+                    parameters.put(
+                            ContextLoader.CONTEXT_CLASS,
+                            MockAnnotationWebApplicationContext.class.getName()
+                    );
+
+                    parameters.put(
+                            MockAnnotationWebApplicationContext.IGNORE_RESOURCES,
+                            "true"
+                    );
+                }
+				
+            	public void prepareRequest(MockHttpServletRequest request) {
+            	}
+            	
+				
+				public void prepareSession(Map<String, Object> parameters) {
+				}
+				
+				public void checkResult(HttpServletRequest request,
+						HttpServletResponse response, ServletContext context,
+						ConfigurableWebApplicationContext applicationContext) {
+					
+					MockHttpServletRequest req  = (MockHttpServletRequest)request;
+					MockHttpServletResponse res = (MockHttpServletResponse)response;
+					MockRequestDispatcher rd    = 
+							(MockRequestDispatcher) req.getRequestDispatcherMap()
+							.get("/WEB-INF/views/exp.jsp");
+					
+					assertNotNull(rd);
+					assertNotNull(rd.getForwardedRequest().getAttribute("ex"));
+					assertEquals(HttpStatus.BAD_REQUEST, res.getStatusCode());
+				}
+				
+				public void checkException(Throwable e) {
+					throw new RuntimeException(e);
+				}
+				
+			}, 
+			new Class[]{ExceptionWithMethodAndBuildResponseWithViewController.class}
 		);
 	}
 	
