@@ -108,7 +108,7 @@ public class BasicAnnotationConfig extends AbstractAnnotationConfig {
 		else if (source instanceof ResultActionEntry){
 			this.addIdentify(
 					(ResultActionEntry) source, 
-					(ActionBuilder) builder,
+					(ComponentBuilder) builder,
 					componentRegistry);
 		}
 

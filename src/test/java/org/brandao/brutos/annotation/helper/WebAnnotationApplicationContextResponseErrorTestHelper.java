@@ -10,6 +10,7 @@ import org.brandao.brutos.annotation.web.ResponseError;
 import org.brandao.brutos.annotation.web.ResponseStatus;
 import org.brandao.brutos.annotation.web.WebActionStrategyType;
 import org.brandao.brutos.web.HttpStatus;
+import org.brandao.brutos.web.WebResultAction;
 
 public class WebAnnotationApplicationContextResponseErrorTestHelper {
 
@@ -244,6 +245,26 @@ public class WebAnnotationApplicationContextResponseErrorTestHelper {
 			@ResponseStatus(HttpStatus.BAD_REQUEST)
 			public void npeException(@Basic(bean="exception")Throwable exception){
 				TestCase.assertNotNull(exception);
+			}
+		}
+		
+		
+		/* método com multiplas exceções e montagem da resposta */
+		
+		@ActionStrategy(WebActionStrategyType.DETACHED)
+		public static class ExceptionWithMethodAndBuildResponseController{
+			
+			@Action("/action")
+			@View("view")
+			public void action(){
+				throw new NullPointerException();
+			}
+
+			@ResponseError({IllegalStateException.class,NullPointerException.class})
+			public WebResultAction npeException(WebResultAction result){
+				result.setResponseStatus(HttpStatus.BAD_REQUEST);
+				result.setReason("my bad request");
+				return result;
 			}
 		}
 		

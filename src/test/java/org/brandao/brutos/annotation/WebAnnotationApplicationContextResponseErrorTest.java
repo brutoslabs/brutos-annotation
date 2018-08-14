@@ -16,6 +16,7 @@ import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextRespo
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionAliasActionLevelController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionAliasControllerLevelController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodAndAliasAnnotationController;
+import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodAndBuildResponseController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodAndViewAnnotationController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodAndViewController;
 import org.brandao.brutos.annotation.helper.WebAnnotationApplicationContextResponseErrorTestHelper.Controllers.ExceptionWithMethodDefaultConfigController;
@@ -587,6 +588,47 @@ public class WebAnnotationApplicationContextResponseErrorTest extends BrutosTest
 				
 			}, 
 			new Class[]{ExceptionWithMethodAndAliasAnnotationController.class}
+		);
+	}
+
+	public void testExceptionWithMethodAndBuildResponseController(){
+		WebApplicationContextTester.run(
+			"/action", 
+			new BasicWebApplicationTester(){
+				
+                public void prepareContext(Map<String, String> parameters) {
+                    parameters.put(
+                            ContextLoader.CONTEXT_CLASS,
+                            MockAnnotationWebApplicationContext.class.getName()
+                    );
+
+                    parameters.put(
+                            MockAnnotationWebApplicationContext.IGNORE_RESOURCES,
+                            "true"
+                    );
+                }
+				
+            	public void prepareRequest(MockHttpServletRequest request) {
+            	}
+            	
+				
+				public void prepareSession(Map<String, Object> parameters) {
+				}
+				
+				public void checkResult(HttpServletRequest request,
+						HttpServletResponse response, ServletContext context,
+						ConfigurableWebApplicationContext applicationContext) {
+					
+					MockHttpServletResponse res = (MockHttpServletResponse)response;
+					assertEquals(HttpStatus.BAD_REQUEST, res.getErrorCode());
+				}
+				
+				public void checkException(Throwable e) {
+					throw new RuntimeException(e);
+				}
+				
+			}, 
+			new Class[]{ExceptionWithMethodAndBuildResponseController.class}
 		);
 	}
 	
