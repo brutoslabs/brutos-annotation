@@ -29,7 +29,7 @@ public @interface ResponseErrors {
 	 * Descrição do erro.
 	 * @see HttpServletResponse#sendError(int, String)
 	 */
-	String	reason() default "";
+	String reason() default "";
 	
     /**
      * Visão da exceção. Se não for informada,

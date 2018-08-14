@@ -114,7 +114,7 @@ public class ThrowableEntry {
 	}
 
 	public boolean isRendered() {
-		return rendered;
+		return rendered? true : this.view != null;
 	}
 
 	public void setRendered(boolean rendered) {
