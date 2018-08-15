@@ -18,7 +18,7 @@
 package org.brandao.brutos.annotation;
 
 /**
- * Descreve as regras de validação pré-definidas.
+ * Descreve as regras de validação predefinidas.
  * 
  * @author Brandao
  */

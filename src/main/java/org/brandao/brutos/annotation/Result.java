@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 import org.brandao.brutos.BrutosConstants;
 
 /**
- * Nomeia o resultado de uma ação. Se omitido, será usado <code>result</code>.
+ * Define o mapeamento do resultado de uma ação.
  * 
  * <pre>
  * Ex:

@@ -18,7 +18,8 @@
 package org.brandao.brutos.annotation;
 
 /**
- *
+ * Descreve os tipos de filtros de componentes.
+ * 
  * @author Brandao
  */
 public enum FilterType {

@@ -18,7 +18,7 @@
 package org.brandao.brutos.annotation;
 
 /**
- * Descreve as opções pré-definidas de direcionamento do fluxo para a visão.
+ * Descreve as opções predefinidas de direcionamento do fluxo para a visão.
  * 
  * @author Brandao
  */

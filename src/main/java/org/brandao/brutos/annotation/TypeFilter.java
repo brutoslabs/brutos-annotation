@@ -22,17 +22,24 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- *
+ * Especifica um filtro de componenete.
+ * 
  * @author Brandao
  */
 @java.lang.annotation.Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TypeFilter {
 
+	/**
+	 * Tipo de filtro. Os valores estão descritos em {@link FilterType}. 
+	 */
 	FilterType type();
 
+	/**
+	 * Define o padrão que o nome do componente a ser filtrado tem que possuir.
+	 */
 	String[] pattern() default {};
 
-	Class[] value() default {};
+	Class<?>[] value() default {};
 
 }

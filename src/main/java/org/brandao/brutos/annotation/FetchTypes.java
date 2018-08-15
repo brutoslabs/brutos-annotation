@@ -2,6 +2,7 @@ package org.brandao.brutos.annotation;
 
 /**
  * Descreve as estratégia a serem utilizadas para obter os dados de uma solicitação.
+ * 
  * @author Brandao
  *
  */

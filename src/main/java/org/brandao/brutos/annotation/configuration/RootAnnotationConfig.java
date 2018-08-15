@@ -21,6 +21,7 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.brandao.brutos.BrutosException;
 import org.brandao.brutos.ComponentRegistry;
 import org.brandao.brutos.annotation.*;
@@ -48,19 +49,20 @@ public class RootAnnotationConfig extends AbstractAnnotationConfig {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object applyConfiguration0(Object source, Object builder,
 			ComponentRegistry componentRegistry) throws InstantiationException,
 			IllegalAccessException {
 
 		List<Object> entityList = (List<Object>) source;
 
-		Map<Class, AnnotationConfigEntry> map = new HashMap<Class, AnnotationConfigEntry>();
+		Map<Class<?>, AnnotationConfigEntry> map = new HashMap<Class<?>, AnnotationConfigEntry>();
 
 		for (AnnotationConfigEntry ace : super.annotation
 				.getNextAnnotationConfig())
 			map.put(ace.getStereotype().target(), ace);
 
-		for (Class target : getExecutionOrder()) {
+		for (Class<?> target : getExecutionOrder()) {
 
 			AnnotationConfigEntry ace = map.get(target);
 
@@ -79,6 +81,7 @@ public class RootAnnotationConfig extends AbstractAnnotationConfig {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Class<? extends Annotation>[] getExecutionOrder() {
 		return new Class[] { TypeDef.class, ExtendedScope.class,
 				Intercepts.class, InterceptsStack.class, Controller.class };

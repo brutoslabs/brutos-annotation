@@ -23,7 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Intercepta e trata uma exceção.
+ * Especifica o mapeamento de uma exceção.
  * 
  * <pre>
  * Ex1:
@@ -67,11 +67,7 @@ import java.lang.annotation.Target;
 public @interface ThrowSafe {
     
     /**
-     * Visão da exceção. Se não for informada,
-     * será PREFIX_VIEW + CONTROLLER_NAME + SEPARATOR_VIEW
-     * [+ ACTION_NAME + SEPARATOR_VIEW] + EXCEPTION_NAME. 
-     * Somente será usado o ACTION_NAME se for especificada 
-     * na ação.
+     * Visão da exceção.
      */
     String view() default "";
     
@@ -93,7 +89,7 @@ public @interface ThrowSafe {
     String dispatcher() default "forward";
     
     /**
-     * Determina a renderização, ou não, da vista. 
+     * Determina a renderização ou não da vista. 
      * Se verdadeiro a visão será renderizada, caso contrário não.
      */
     boolean rendered() default false;

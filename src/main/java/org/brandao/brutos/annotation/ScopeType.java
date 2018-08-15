@@ -18,7 +18,7 @@
 package org.brandao.brutos.annotation;
 
 /**
- * Descreve os escopos pré-definidos.
+ * Descreve os escopos predefinidos.
  * 
  * @author Brandao
  */

@@ -23,8 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defini se o resultado da ação deve, ou não, ser renderizado. Usado para
- * definir se o resultado será renderizado ou disponibilizado na visão.
+ * Defini se o resultado da ação deve ou não ser renderizado.
  * 
  * @author Brandao
  */

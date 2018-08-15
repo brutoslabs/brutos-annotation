@@ -61,8 +61,7 @@ public @interface Intercepts {
 
 	/**
 	 * Indica que é um interceptador global. Se verdadeiro, todos os
-	 * controladores serão interceptados, senão terá que ser definido quais
-	 * controladores deverão ser interceptados.
+	 * controladores da aplicação serão interceptados.
 	 */
 	boolean isDefault() default true;
 

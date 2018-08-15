@@ -64,6 +64,7 @@ import org.brandao.brutos.logger.LoggerProvider;
  *
  * @author Brandao
  */
+@SuppressWarnings("deprecation")
 public class ComponentConfigurer {
 
 	public static final org.brandao.brutos.annotation.scanner.TypeFilter[] DEFAULT_FILTERS = 

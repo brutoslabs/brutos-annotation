@@ -31,7 +31,7 @@ import org.brandao.brutos.annotation.scanner.Scanner;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ComponentScan {
 
-	Class[] basePackage() default {};
+	Class<?>[] basePackage() default {};
 
 	String[] value() default {};
 

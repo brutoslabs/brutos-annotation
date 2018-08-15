@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 /**
  * Coleção de interceptadores de exceções.
  * 
- * @author Afonso Brandao
+ * @author Brandao
  */
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)

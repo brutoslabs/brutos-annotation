@@ -23,8 +23,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
- * @author Afonso Brandao
+ * Indica que a classe possui configurações da aplicação.
+ * 
+ * <pre>
+ * Ex:
+ * &#064;ComponentScan("my.app.package")
+ * &#064;Configuration
+ * public class AppConfig{
+ * 
+ * }
+ * 
+ * </pre>
+ * 
+ * @author Brandao
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
