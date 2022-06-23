@@ -23,7 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defini como uma ação será mapeada.
+ * Define como uma ação será mapeada.
  * 
  * @author Afonso Brandao
  */
