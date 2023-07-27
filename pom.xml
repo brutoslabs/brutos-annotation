@@ -4,7 +4,7 @@
 	<groupId>org.brandao</groupId>
 	<artifactId>brutos-annotation</artifactId>
 	<packaging>jar</packaging>
-	<version>2.0-rc3</version>
+	<version>3.0-b1</version>
 	<name>brutos-annotation</name>
 	<description>Brutos Annotation. This artifact depends on the brutos-core.</description>
 	<url>http://www.brutosframework.com.br/</url>
@@ -74,6 +74,7 @@
 					</execution>
 				</executions>
 			</plugin>
+<!--			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -87,6 +88,7 @@
 					</execution>
 				</executions>
 			</plugin>
+-->			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
@@ -106,8 +108,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.0.2</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
@@ -145,7 +147,7 @@
 		<dependency>
 			<groupId>org.brandao</groupId>
 			<artifactId>brutos-core</artifactId>
-			<version>2.0-rc3</version>
+			<version>3.0-b1</version>
 		</dependency>
 	</dependencies>
 
