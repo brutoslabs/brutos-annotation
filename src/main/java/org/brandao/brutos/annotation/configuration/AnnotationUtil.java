@@ -378,7 +378,7 @@ public class AnnotationUtil {
 
 			for (Class<? extends Annotation> an : after) {
 				if (an == org.brandao.brutos.annotation.Configuration.class) {
-					logger.warn("property after ignored: " + ace.getClass());
+					logger.trace("property after ignored: " + ace.getClass());
 					continue;
 				}
 
@@ -486,7 +486,7 @@ public class AnnotationUtil {
 		}
 
 		if (entry.getNextAnnotationConfig().isEmpty())
-			logger.info("route config detected: " + prefix);
+			logger.trace("route config detected: " + prefix);
 	}
 
 	public static Scanner createScanner(ConfigurationEntry configuration,
