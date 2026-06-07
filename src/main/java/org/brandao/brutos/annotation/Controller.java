@@ -56,26 +56,6 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  * 
- * <b>Mapeamentos:</b>
- * 
- * <table border="1">
- * <tr>
- * <td><b>Ação</b></td>
- * <td><b>Método</b></td>
- * </tr>
- * <tr>
- * <td>/index</td>
- * <td>Index.action1()</td>
- * </tr>
- * <tr>
- * <td>/index?invoke=action1</td>
- * <td>Index.action1()</td>
- * </tr>
- * <tr>
- * <td>/index?invoke=action2</td>
- * <td>Index.action2()</td>
- * </tr>
- * </table>
  * 
  * <pre>
  * Ex2:
@@ -96,23 +76,6 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  * 
- * <b>Mapeamentos:</b>
- * 
- * <table border="1">
- * <tr>
- * <td><b>Ação</b></td>
- * <td><b>Método</b></td>
- * </tr>
- * <tr>
- * <td>/index/action1</td>
- * <td>Index.action1()</td>
- * </tr>
- * <tr>
- * <td>/index/action2</td>
- * <td>Index.action2()</td>
- * </tr>
- * </table>
- * 
  * <pre>
  * Ex3:
  * &#064;Controller
@@ -132,23 +95,6 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  * 
- * <b>Mapeamentos:</b>
- * 
- * <table border="1">
- * <tr>
- * <td><b>Ação</b></td>
- * <td><b>Método</b></td>
- * </tr>
- * <tr>
- * <td>/index/action1</td>
- * <td>Index.action1()</td>
- * </tr>
- * <tr>
- * <td>/index/action2</td>
- * <td>Index.action2()</td>
- * </tr>
- * </table>
- * 
  * <pre>
  * Ex4:
  * &#064;Controller("/index")
@@ -167,23 +113,6 @@ import java.lang.annotation.Target;
  * 
  * }
  * </pre>
- * 
- * <b>Mapeamentos:</b>
- * 
- * <table border="1">
- * <tr>
- * <td><b>Ação</b></td>
- * <td><b>Método</b></td>
- * </tr>
- * <tr>
- * <td>/index/action1</td>
- * <td>Index.action1()</td>
- * </tr>
- * <tr>
- * <td>/index/action2</td>
- * <td>Index.action2()</td>
- * </tr>
- * </table>
  * 
  * @author Afonso Brandao
  */

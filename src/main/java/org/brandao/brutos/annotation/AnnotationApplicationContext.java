@@ -30,7 +30,7 @@ import org.brandao.brutos.annotation.configuration.ConfigurationEntry;
  * Para que a configuração seja carregada em uma aplicação web, é necessária a
  * utilização das tags <b><code>&lt;context:annotation-config/&gt;</code></b> e
  * <b><code>&lt;context:component-scan/&gt;</code></b> no arquivo de
- * configuração <code>brutos-config.xml</code
+ * configuração <code>brutos-config.xml</code>
  * </p>
  * 
  * @author Afonso Brandao

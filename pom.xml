@@ -4,13 +4,13 @@
 	<groupId>org.brandao</groupId>
 	<artifactId>brutos-annotation</artifactId>
 	<packaging>jar</packaging>
-	<version>2.0-rc3</version>
+	<version>2.0.final</version>
 	<name>brutos-annotation</name>
 	<description>Brutos Annotation. This artifact depends on the brutos-core.</description>
 	<url>http://www.brutosframework.com.br/</url>
 
 	<issueManagement>
-		<url>https://github.com/brandaof/brutos-annotation/issues</url>
+		<url>https://github.com/brutoslabs/brutos-annotation/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
 
@@ -23,17 +23,15 @@
 	</licenses>
 
 	<scm>
-		<url>https://github.com/brandaof/brutos-annotation</url>
-		<connection>scm:git:https://github.com/brandaof/brutos-annotation.git</connection>
-		<developerConnection>scm:git:git@github.com:brandaof/brutos-annotation.git</developerConnection>
+		<url>https://github.com/brutoslabs/brutos-annotation</url>
+		<connection>scm:git:https://github.com/brutoslabs/brutos-annotation.git</connection>
+		<developerConnection>scm:git:git@github.com:brutoslabs/brutos-annotation.git</developerConnection>
 	</scm>
 
 	<developers>
 		<developer>
 			<name>Afonso Brandao</name>
 			<email>afonso.rbn@gmail.com</email>
-			<organization>Brandao</organization>
-			<organizationUrl>http://brandao.org/</organizationUrl>
 		</developer>
 	</developers>
 
@@ -106,8 +104,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.0.2</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
@@ -145,7 +143,7 @@
 		<dependency>
 			<groupId>org.brandao</groupId>
 			<artifactId>brutos-core</artifactId>
-			<version>2.0-rc3</version>
+			<version>2.0.final</version>
 		</dependency>
 	</dependencies>
 
@@ -155,6 +153,5 @@
 	</properties>
 	<organization>
 		<name>Brandao</name>
-		<url>http://www.brandao.org/</url>
 	</organization>
 </project>
